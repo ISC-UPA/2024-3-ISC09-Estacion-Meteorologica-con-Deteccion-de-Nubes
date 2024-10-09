@@ -1,0 +1,8 @@
+{
+  "name": "2024-3-ISC09-Estacion-Meteorologica-con-Deteccion-de-Nubes",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@3.6.4"
+}
