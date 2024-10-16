@@ -4,10 +4,11 @@
 /node_modules
 package-lock.json
 yarn.lock
+*/.yarn
 
 #KeystoneJS
-packages/backend/.keystone/
-packages/backend/db/
+backend/.keystone/
+backend/db/
 *.log
 
 # Logs
@@ -18,19 +19,19 @@ yarn-debug.log*
 yarn-error.log*
 
 # Dependency directories
-packages/*/node_modules/
+*/node_modules/
 
 # Build directories
-packages/*/build/
-packages/*/dist/
+*/build/
+*/dist/
 
 # Expo
-packages/frontend_modules/
-packages/frontend/.expo/
-packages/frontend/.expo-shared/
-packages/frontend/dist/
-packages/frontend/npm-debug.*
-packages/frontend/web-build/
+frontend/node_modules/
+frontend/.expo/
+frontend/.expo-shared/
+frontend/dist/
+frontend/npm-debug.*
+frontend/web-build/
 *.jks
 *.p8
 *.p12

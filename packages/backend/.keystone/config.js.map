@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../keystone.ts"],
-  "sourcesContent": ["import { config, list } from '@keystone-6/core';\r\nimport { allowAll } from '@keystone-6/core/access';\r\nimport { text } from '@keystone-6/core/fields';\r\n\r\nexport default config({\r\n  db: {\r\n    provider: 'sqlite',\r\n    url: 'file:./db/cloudyDB.db',\r\n  },\r\n  lists: {\r\n    Pueblo: list({\r\n      access: allowAll,\r\n      fields: {\r\n        nombredelrancho: text({ validation: { isRequired: true } }),\r\n        correoncio: text({ validation: { isRequired: true }, isIndexed: 'unique' }),\r\n        callesota: text({ validation: { isRequired: true } }),\r\n        numerote: text({ validation: { isRequired: true } }),\r\n      },\r\n    }),\r\n  },\r\n});"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,kBAA6B;AAC7B,oBAAyB;AACzB,oBAAqB;AAErB,IAAO,uBAAQ,oBAAO;AAAA,EACpB,IAAI;AAAA,IACF,UAAU;AAAA,IACV,KAAK;AAAA,EACP;AAAA,EACA,OAAO;AAAA,IACL,YAAQ,kBAAK;AAAA,MACX,QAAQ;AAAA,MACR,QAAQ;AAAA,QACN,qBAAiB,oBAAK,EAAE,YAAY,EAAE,YAAY,KAAK,EAAE,CAAC;AAAA,QAC1D,gBAAY,oBAAK,EAAE,YAAY,EAAE,YAAY,KAAK,GAAG,WAAW,SAAS,CAAC;AAAA,QAC1E,eAAW,oBAAK,EAAE,YAAY,EAAE,YAAY,KAAK,EAAE,CAAC;AAAA,QACpD,cAAU,oBAAK,EAAE,YAAY,EAAE,YAAY,KAAK,EAAE,CAAC;AAAA,MACrD;AAAA,IACF,CAAC;AAAA,EACH;AACF,CAAC;",
-  "names": []
-}
