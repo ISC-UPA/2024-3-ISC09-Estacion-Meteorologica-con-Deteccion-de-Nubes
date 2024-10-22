@@ -11,10 +11,34 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Pueblo {
-  id              String @id @default(cuid())
-  nombredelrancho String @default("")
-  correoncio      String @unique @default("")
-  callesota       String @default("")
-  numerote        String @default("")
+model Login {
+  id        String @id @default(cuid())
+  idUser    Int    @unique
+  nombre    String @default("")
+  username  String @default("")
+  passsword String @default("")
+}
+
+model Ubicacione {
+  id         String @id @default(cuid())
+  idLocacion Int    @unique
+  nombre     String @default("")
+  latitud    Int
+  longitud   Int
+}
+
+model Temperatura {
+  id            String   @id @default(cuid())
+  idTemperatura Int      @unique
+  valor         Int
+  timestamp     DateTime
+  idLocacion    String   @default("")
+}
+
+model Humedade {
+  id         String   @id @default(cuid())
+  idHumedad  Int      @unique
+  valor      Int
+  timestamp  DateTime
+  idLocacion String   @default("")
 }
