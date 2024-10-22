@@ -107,84 +107,49 @@ input LoginCreateInput {
   passsword: String
 }
 
-type Ubicacione {
+type Usuario {
   id: ID!
-  idLocacion: Int
+  usuario_id: Int
   nombre: String
-  latitud: Int
-  longitud: Int
+  email: String
+  contrasena: PasswordState
+  telefono: String
+  fecha_creacion: DateTime
+  fotos(where: FotoCieloWhereInput! = {}, orderBy: [FotoCieloOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: FotoCieloWhereUniqueInput): [FotoCielo!]
+  fotosCount(where: FotoCieloWhereInput! = {}): Int
+  lecturas(where: LecturaMeteorologiaWhereInput! = {}, orderBy: [LecturaMeteorologiaOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LecturaMeteorologiaWhereUniqueInput): [LecturaMeteorologia!]
+  lecturasCount(where: LecturaMeteorologiaWhereInput! = {}): Int
+  ubicaciones(where: UbicacionWhereInput! = {}, orderBy: [UbicacionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UbicacionWhereUniqueInput): [Ubicacion!]
+  ubicacionesCount(where: UbicacionWhereInput! = {}): Int
 }
 
-input UbicacioneWhereUniqueInput {
-  id: ID
-  idLocacion: Int
-}
-
-input UbicacioneWhereInput {
-  AND: [UbicacioneWhereInput!]
-  OR: [UbicacioneWhereInput!]
-  NOT: [UbicacioneWhereInput!]
-  id: IDFilter
-  idLocacion: IntFilter
-  nombre: StringFilter
-  latitud: IntFilter
-  longitud: IntFilter
-}
-
-input UbicacioneOrderByInput {
-  id: OrderDirection
-  idLocacion: OrderDirection
-  nombre: OrderDirection
-  latitud: OrderDirection
-  longitud: OrderDirection
-}
-
-input UbicacioneUpdateInput {
-  idLocacion: Int
-  nombre: String
-  latitud: Int
-  longitud: Int
-}
-
-input UbicacioneUpdateArgs {
-  where: UbicacioneWhereUniqueInput!
-  data: UbicacioneUpdateInput!
-}
-
-input UbicacioneCreateInput {
-  idLocacion: Int
-  nombre: String
-  latitud: Int
-  longitud: Int
-}
-
-type Temperatura {
-  id: ID!
-  idTemperatura: Int
-  valor: Int
-  timestamp: DateTime
-  idLocacion: String
+type PasswordState {
+  isSet: Boolean!
 }
 
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
-input TemperaturaWhereUniqueInput {
+input UsuarioWhereUniqueInput {
   id: ID
-  idTemperatura: Int
+  email: String
 }
 
-input TemperaturaWhereInput {
-  AND: [TemperaturaWhereInput!]
-  OR: [TemperaturaWhereInput!]
-  NOT: [TemperaturaWhereInput!]
+input UsuarioWhereInput {
+  AND: [UsuarioWhereInput!]
+  OR: [UsuarioWhereInput!]
+  NOT: [UsuarioWhereInput!]
   id: IDFilter
-  idTemperatura: IntFilter
-  valor: IntFilter
-  timestamp: DateTimeFilter
-  idLocacion: StringFilter
+  usuario_id: IntFilter
+  nombre: StringFilter
+  email: StringFilter
+  telefono: StringFilter
+  fecha_creacion: DateTimeNullableFilter
+  fotos: FotoCieloManyRelationFilter
+  lecturas: LecturaMeteorologiaManyRelationFilter
+  ubicaciones: UbicacionManyRelationFilter
 }
 
-input DateTimeFilter {
+input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
   notIn: [DateTime!]
@@ -192,85 +157,483 @@ input DateTimeFilter {
   lte: DateTime
   gt: DateTime
   gte: DateTime
-  not: DateTimeFilter
+  not: DateTimeNullableFilter
 }
 
-input TemperaturaOrderByInput {
+input FotoCieloManyRelationFilter {
+  every: FotoCieloWhereInput
+  some: FotoCieloWhereInput
+  none: FotoCieloWhereInput
+}
+
+input LecturaMeteorologiaManyRelationFilter {
+  every: LecturaMeteorologiaWhereInput
+  some: LecturaMeteorologiaWhereInput
+  none: LecturaMeteorologiaWhereInput
+}
+
+input UbicacionManyRelationFilter {
+  every: UbicacionWhereInput
+  some: UbicacionWhereInput
+  none: UbicacionWhereInput
+}
+
+input UsuarioOrderByInput {
   id: OrderDirection
-  idTemperatura: OrderDirection
-  valor: OrderDirection
-  timestamp: OrderDirection
-  idLocacion: OrderDirection
+  usuario_id: OrderDirection
+  nombre: OrderDirection
+  email: OrderDirection
+  telefono: OrderDirection
+  fecha_creacion: OrderDirection
 }
 
-input TemperaturaUpdateInput {
-  idTemperatura: Int
-  valor: Int
-  timestamp: DateTime
-  idLocacion: String
+input UsuarioUpdateInput {
+  usuario_id: Int
+  nombre: String
+  email: String
+  contrasena: String
+  telefono: String
+  fecha_creacion: DateTime
+  fotos: FotoCieloRelateToManyForUpdateInput
+  lecturas: LecturaMeteorologiaRelateToManyForUpdateInput
+  ubicaciones: UbicacionRelateToManyForUpdateInput
 }
 
-input TemperaturaUpdateArgs {
-  where: TemperaturaWhereUniqueInput!
-  data: TemperaturaUpdateInput!
+input FotoCieloRelateToManyForUpdateInput {
+  disconnect: [FotoCieloWhereUniqueInput!]
+  set: [FotoCieloWhereUniqueInput!]
+  create: [FotoCieloCreateInput!]
+  connect: [FotoCieloWhereUniqueInput!]
 }
 
-input TemperaturaCreateInput {
-  idTemperatura: Int
-  valor: Int
-  timestamp: DateTime
-  idLocacion: String
+input LecturaMeteorologiaRelateToManyForUpdateInput {
+  disconnect: [LecturaMeteorologiaWhereUniqueInput!]
+  set: [LecturaMeteorologiaWhereUniqueInput!]
+  create: [LecturaMeteorologiaCreateInput!]
+  connect: [LecturaMeteorologiaWhereUniqueInput!]
 }
 
-type Humedade {
+input UbicacionRelateToManyForUpdateInput {
+  disconnect: [UbicacionWhereUniqueInput!]
+  set: [UbicacionWhereUniqueInput!]
+  create: [UbicacionCreateInput!]
+  connect: [UbicacionWhereUniqueInput!]
+}
+
+input UsuarioUpdateArgs {
+  where: UsuarioWhereUniqueInput!
+  data: UsuarioUpdateInput!
+}
+
+input UsuarioCreateInput {
+  usuario_id: Int
+  nombre: String
+  email: String
+  contrasena: String
+  telefono: String
+  fecha_creacion: DateTime
+  fotos: FotoCieloRelateToManyForCreateInput
+  lecturas: LecturaMeteorologiaRelateToManyForCreateInput
+  ubicaciones: UbicacionRelateToManyForCreateInput
+}
+
+input FotoCieloRelateToManyForCreateInput {
+  create: [FotoCieloCreateInput!]
+  connect: [FotoCieloWhereUniqueInput!]
+}
+
+input LecturaMeteorologiaRelateToManyForCreateInput {
+  create: [LecturaMeteorologiaCreateInput!]
+  connect: [LecturaMeteorologiaWhereUniqueInput!]
+}
+
+input UbicacionRelateToManyForCreateInput {
+  create: [UbicacionCreateInput!]
+  connect: [UbicacionWhereUniqueInput!]
+}
+
+type FotoCielo {
   id: ID!
-  idHumedad: Int
-  valor: Int
-  timestamp: DateTime
-  idLocacion: String
+  usuario_id: Int
+  url_foto: String
+  fecha_foto: DateTime
 }
 
-input HumedadeWhereUniqueInput {
+input FotoCieloWhereUniqueInput {
   id: ID
-  idHumedad: Int
 }
 
-input HumedadeWhereInput {
-  AND: [HumedadeWhereInput!]
-  OR: [HumedadeWhereInput!]
-  NOT: [HumedadeWhereInput!]
+input FotoCieloWhereInput {
+  AND: [FotoCieloWhereInput!]
+  OR: [FotoCieloWhereInput!]
+  NOT: [FotoCieloWhereInput!]
   id: IDFilter
-  idHumedad: IntFilter
-  valor: IntFilter
-  timestamp: DateTimeFilter
-  idLocacion: StringFilter
+  usuario_id: IntFilter
+  url_foto: StringFilter
+  fecha_foto: DateTimeNullableFilter
 }
 
-input HumedadeOrderByInput {
+input FotoCieloOrderByInput {
   id: OrderDirection
-  idHumedad: OrderDirection
-  valor: OrderDirection
-  timestamp: OrderDirection
-  idLocacion: OrderDirection
+  usuario_id: OrderDirection
+  url_foto: OrderDirection
+  fecha_foto: OrderDirection
 }
 
-input HumedadeUpdateInput {
-  idHumedad: Int
-  valor: Int
-  timestamp: DateTime
-  idLocacion: String
+input FotoCieloUpdateInput {
+  usuario_id: Int
+  url_foto: String
+  fecha_foto: DateTime
 }
 
-input HumedadeUpdateArgs {
-  where: HumedadeWhereUniqueInput!
-  data: HumedadeUpdateInput!
+input FotoCieloUpdateArgs {
+  where: FotoCieloWhereUniqueInput!
+  data: FotoCieloUpdateInput!
 }
 
-input HumedadeCreateInput {
-  idHumedad: Int
-  valor: Int
-  timestamp: DateTime
-  idLocacion: String
+input FotoCieloCreateInput {
+  usuario_id: Int
+  url_foto: String
+  fecha_foto: DateTime
+}
+
+type LecturaMeteorologia {
+  id: ID!
+  usuario_id(where: UsuarioWhereInput! = {}, orderBy: [UsuarioOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UsuarioWhereUniqueInput): [Usuario!]
+  usuario_idCount(where: UsuarioWhereInput! = {}): Int
+  foto_id: FotoCielo
+  temperatura: Float
+  presion_atmosferica: Float
+  humedad: Float
+  api: Boolean
+  fecha_lectura: DateTime
+}
+
+input LecturaMeteorologiaWhereUniqueInput {
+  id: ID
+}
+
+input LecturaMeteorologiaWhereInput {
+  AND: [LecturaMeteorologiaWhereInput!]
+  OR: [LecturaMeteorologiaWhereInput!]
+  NOT: [LecturaMeteorologiaWhereInput!]
+  id: IDFilter
+  usuario_id: UsuarioManyRelationFilter
+  foto_id: FotoCieloWhereInput
+  temperatura: FloatFilter
+  presion_atmosferica: FloatFilter
+  humedad: FloatFilter
+  api: BooleanFilter
+  fecha_lectura: DateTimeNullableFilter
+}
+
+input UsuarioManyRelationFilter {
+  every: UsuarioWhereInput
+  some: UsuarioWhereInput
+  none: UsuarioWhereInput
+}
+
+input FloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input LecturaMeteorologiaOrderByInput {
+  id: OrderDirection
+  temperatura: OrderDirection
+  presion_atmosferica: OrderDirection
+  humedad: OrderDirection
+  api: OrderDirection
+  fecha_lectura: OrderDirection
+}
+
+input LecturaMeteorologiaUpdateInput {
+  usuario_id: UsuarioRelateToManyForUpdateInput
+  foto_id: FotoCieloRelateToOneForUpdateInput
+  temperatura: Float
+  presion_atmosferica: Float
+  humedad: Float
+  api: Boolean
+  fecha_lectura: DateTime
+}
+
+input UsuarioRelateToManyForUpdateInput {
+  disconnect: [UsuarioWhereUniqueInput!]
+  set: [UsuarioWhereUniqueInput!]
+  create: [UsuarioCreateInput!]
+  connect: [UsuarioWhereUniqueInput!]
+}
+
+input FotoCieloRelateToOneForUpdateInput {
+  create: FotoCieloCreateInput
+  connect: FotoCieloWhereUniqueInput
+  disconnect: Boolean
+}
+
+input LecturaMeteorologiaUpdateArgs {
+  where: LecturaMeteorologiaWhereUniqueInput!
+  data: LecturaMeteorologiaUpdateInput!
+}
+
+input LecturaMeteorologiaCreateInput {
+  usuario_id: UsuarioRelateToManyForCreateInput
+  foto_id: FotoCieloRelateToOneForCreateInput
+  temperatura: Float
+  presion_atmosferica: Float
+  humedad: Float
+  api: Boolean
+  fecha_lectura: DateTime
+}
+
+input UsuarioRelateToManyForCreateInput {
+  create: [UsuarioCreateInput!]
+  connect: [UsuarioWhereUniqueInput!]
+}
+
+input FotoCieloRelateToOneForCreateInput {
+  create: FotoCieloCreateInput
+  connect: FotoCieloWhereUniqueInput
+}
+
+type Ubicacion {
+  id: ID!
+  latitud: Int
+  longitud: Int
+  usuario_id(where: UsuarioWhereInput! = {}, orderBy: [UsuarioOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UsuarioWhereUniqueInput): [Usuario!]
+  usuario_idCount(where: UsuarioWhereInput! = {}): Int
+}
+
+input UbicacionWhereUniqueInput {
+  id: ID
+}
+
+input UbicacionWhereInput {
+  AND: [UbicacionWhereInput!]
+  OR: [UbicacionWhereInput!]
+  NOT: [UbicacionWhereInput!]
+  id: IDFilter
+  latitud: IntFilter
+  longitud: IntFilter
+  usuario_id: UsuarioManyRelationFilter
+}
+
+input UbicacionOrderByInput {
+  id: OrderDirection
+  latitud: OrderDirection
+  longitud: OrderDirection
+}
+
+input UbicacionUpdateInput {
+  latitud: Int
+  longitud: Int
+  usuario_id: UsuarioRelateToManyForUpdateInput
+}
+
+input UbicacionUpdateArgs {
+  where: UbicacionWhereUniqueInput!
+  data: UbicacionUpdateInput!
+}
+
+input UbicacionCreateInput {
+  latitud: Int
+  longitud: Int
+  usuario_id: UsuarioRelateToManyForCreateInput
+}
+
+type AnalisisFoto {
+  id: ID!
+  foto_id: FotoCielo
+  descripcion: String
+  prediccion: String
+}
+
+input AnalisisFotoWhereUniqueInput {
+  id: ID
+}
+
+input AnalisisFotoWhereInput {
+  AND: [AnalisisFotoWhereInput!]
+  OR: [AnalisisFotoWhereInput!]
+  NOT: [AnalisisFotoWhereInput!]
+  id: IDFilter
+  foto_id: FotoCieloWhereInput
+  descripcion: StringFilter
+  prediccion: StringFilter
+}
+
+input AnalisisFotoOrderByInput {
+  id: OrderDirection
+  descripcion: OrderDirection
+  prediccion: OrderDirection
+}
+
+input AnalisisFotoUpdateInput {
+  foto_id: FotoCieloRelateToOneForUpdateInput
+  descripcion: String
+  prediccion: String
+}
+
+input AnalisisFotoUpdateArgs {
+  where: AnalisisFotoWhereUniqueInput!
+  data: AnalisisFotoUpdateInput!
+}
+
+input AnalisisFotoCreateInput {
+  foto_id: FotoCieloRelateToOneForCreateInput
+  descripcion: String
+  prediccion: String
+}
+
+type authentication {
+  id: ID!
+  tokenId: String
+  associatedUser: Usuario
+  expirationDate: DateTime
+  authenticationType: String
+  adAuthenticationToken: String
+  refreshToken: String
+}
+
+input authenticationWhereUniqueInput {
+  id: ID
+  tokenId: String
+}
+
+input authenticationWhereInput {
+  AND: [authenticationWhereInput!]
+  OR: [authenticationWhereInput!]
+  NOT: [authenticationWhereInput!]
+  id: IDFilter
+  tokenId: StringFilter
+  associatedUser: UsuarioWhereInput
+  expirationDate: DateTimeNullableFilter
+  authenticationType: StringNullableFilter
+  adAuthenticationToken: StringFilter
+  refreshToken: StringFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: StringNullableFilter
+}
+
+input authenticationOrderByInput {
+  id: OrderDirection
+  tokenId: OrderDirection
+  expirationDate: OrderDirection
+  authenticationType: OrderDirection
+  adAuthenticationToken: OrderDirection
+  refreshToken: OrderDirection
+}
+
+input authenticationUpdateInput {
+  tokenId: String
+  associatedUser: UsuarioRelateToOneForUpdateInput
+  expirationDate: DateTime
+  authenticationType: String
+  adAuthenticationToken: String
+  refreshToken: String
+}
+
+input UsuarioRelateToOneForUpdateInput {
+  create: UsuarioCreateInput
+  connect: UsuarioWhereUniqueInput
+  disconnect: Boolean
+}
+
+input authenticationUpdateArgs {
+  where: authenticationWhereUniqueInput!
+  data: authenticationUpdateInput!
+}
+
+input authenticationCreateInput {
+  tokenId: String
+  associatedUser: UsuarioRelateToOneForCreateInput
+  expirationDate: DateTime
+  authenticationType: String
+  adAuthenticationToken: String
+  refreshToken: String
+}
+
+input UsuarioRelateToOneForCreateInput {
+  create: UsuarioCreateInput
+  connect: UsuarioWhereUniqueInput
+}
+
+type azureADIntegration {
+  id: ID!
+  adUserId: String
+  adTenantId: String
+  roleMapping: String
+  accessTokenValidity: Boolean
+  loginHistory: String
+}
+
+input azureADIntegrationWhereUniqueInput {
+  id: ID
+  adUserId: String
+}
+
+input azureADIntegrationWhereInput {
+  AND: [azureADIntegrationWhereInput!]
+  OR: [azureADIntegrationWhereInput!]
+  NOT: [azureADIntegrationWhereInput!]
+  id: IDFilter
+  adUserId: StringFilter
+  adTenantId: StringFilter
+  roleMapping: StringFilter
+  accessTokenValidity: BooleanFilter
+  loginHistory: StringFilter
+}
+
+input azureADIntegrationOrderByInput {
+  id: OrderDirection
+  adUserId: OrderDirection
+  adTenantId: OrderDirection
+  roleMapping: OrderDirection
+  accessTokenValidity: OrderDirection
+  loginHistory: OrderDirection
+}
+
+input azureADIntegrationUpdateInput {
+  adUserId: String
+  adTenantId: String
+  roleMapping: String
+  accessTokenValidity: Boolean
+  loginHistory: String
+}
+
+input azureADIntegrationUpdateArgs {
+  where: azureADIntegrationWhereUniqueInput!
+  data: azureADIntegrationUpdateInput!
+}
+
+input azureADIntegrationCreateInput {
+  adUserId: String
+  adTenantId: String
+  roleMapping: String
+  accessTokenValidity: Boolean
+  loginHistory: String
 }
 
 """
@@ -285,39 +648,75 @@ type Mutation {
   updateLogins(data: [LoginUpdateArgs!]!): [Login]
   deleteLogin(where: LoginWhereUniqueInput!): Login
   deleteLogins(where: [LoginWhereUniqueInput!]!): [Login]
-  createUbicacione(data: UbicacioneCreateInput!): Ubicacione
-  createUbicaciones(data: [UbicacioneCreateInput!]!): [Ubicacione]
-  updateUbicacione(where: UbicacioneWhereUniqueInput!, data: UbicacioneUpdateInput!): Ubicacione
-  updateUbicaciones(data: [UbicacioneUpdateArgs!]!): [Ubicacione]
-  deleteUbicacione(where: UbicacioneWhereUniqueInput!): Ubicacione
-  deleteUbicaciones(where: [UbicacioneWhereUniqueInput!]!): [Ubicacione]
-  createTemperatura(data: TemperaturaCreateInput!): Temperatura
-  createTemperaturas(data: [TemperaturaCreateInput!]!): [Temperatura]
-  updateTemperatura(where: TemperaturaWhereUniqueInput!, data: TemperaturaUpdateInput!): Temperatura
-  updateTemperaturas(data: [TemperaturaUpdateArgs!]!): [Temperatura]
-  deleteTemperatura(where: TemperaturaWhereUniqueInput!): Temperatura
-  deleteTemperaturas(where: [TemperaturaWhereUniqueInput!]!): [Temperatura]
-  createHumedade(data: HumedadeCreateInput!): Humedade
-  createHumedades(data: [HumedadeCreateInput!]!): [Humedade]
-  updateHumedade(where: HumedadeWhereUniqueInput!, data: HumedadeUpdateInput!): Humedade
-  updateHumedades(data: [HumedadeUpdateArgs!]!): [Humedade]
-  deleteHumedade(where: HumedadeWhereUniqueInput!): Humedade
-  deleteHumedades(where: [HumedadeWhereUniqueInput!]!): [Humedade]
+  createUsuario(data: UsuarioCreateInput!): Usuario
+  createUsuarios(data: [UsuarioCreateInput!]!): [Usuario]
+  updateUsuario(where: UsuarioWhereUniqueInput!, data: UsuarioUpdateInput!): Usuario
+  updateUsuarios(data: [UsuarioUpdateArgs!]!): [Usuario]
+  deleteUsuario(where: UsuarioWhereUniqueInput!): Usuario
+  deleteUsuarios(where: [UsuarioWhereUniqueInput!]!): [Usuario]
+  createFotoCielo(data: FotoCieloCreateInput!): FotoCielo
+  createFotoCielos(data: [FotoCieloCreateInput!]!): [FotoCielo]
+  updateFotoCielo(where: FotoCieloWhereUniqueInput!, data: FotoCieloUpdateInput!): FotoCielo
+  updateFotoCielos(data: [FotoCieloUpdateArgs!]!): [FotoCielo]
+  deleteFotoCielo(where: FotoCieloWhereUniqueInput!): FotoCielo
+  deleteFotoCielos(where: [FotoCieloWhereUniqueInput!]!): [FotoCielo]
+  createLecturaMeteorologia(data: LecturaMeteorologiaCreateInput!): LecturaMeteorologia
+  createLecturaMeteorologias(data: [LecturaMeteorologiaCreateInput!]!): [LecturaMeteorologia]
+  updateLecturaMeteorologia(where: LecturaMeteorologiaWhereUniqueInput!, data: LecturaMeteorologiaUpdateInput!): LecturaMeteorologia
+  updateLecturaMeteorologias(data: [LecturaMeteorologiaUpdateArgs!]!): [LecturaMeteorologia]
+  deleteLecturaMeteorologia(where: LecturaMeteorologiaWhereUniqueInput!): LecturaMeteorologia
+  deleteLecturaMeteorologias(where: [LecturaMeteorologiaWhereUniqueInput!]!): [LecturaMeteorologia]
+  createUbicacion(data: UbicacionCreateInput!): Ubicacion
+  createUbicacions(data: [UbicacionCreateInput!]!): [Ubicacion]
+  updateUbicacion(where: UbicacionWhereUniqueInput!, data: UbicacionUpdateInput!): Ubicacion
+  updateUbicacions(data: [UbicacionUpdateArgs!]!): [Ubicacion]
+  deleteUbicacion(where: UbicacionWhereUniqueInput!): Ubicacion
+  deleteUbicacions(where: [UbicacionWhereUniqueInput!]!): [Ubicacion]
+  createAnalisisFoto(data: AnalisisFotoCreateInput!): AnalisisFoto
+  createAnalisisFotos(data: [AnalisisFotoCreateInput!]!): [AnalisisFoto]
+  updateAnalisisFoto(where: AnalisisFotoWhereUniqueInput!, data: AnalisisFotoUpdateInput!): AnalisisFoto
+  updateAnalisisFotos(data: [AnalisisFotoUpdateArgs!]!): [AnalisisFoto]
+  deleteAnalisisFoto(where: AnalisisFotoWhereUniqueInput!): AnalisisFoto
+  deleteAnalisisFotos(where: [AnalisisFotoWhereUniqueInput!]!): [AnalisisFoto]
+  createauthentication(data: authenticationCreateInput!): authentication
+  createAuthentications(data: [authenticationCreateInput!]!): [authentication]
+  updateauthentication(where: authenticationWhereUniqueInput!, data: authenticationUpdateInput!): authentication
+  updateAuthentications(data: [authenticationUpdateArgs!]!): [authentication]
+  deleteauthentication(where: authenticationWhereUniqueInput!): authentication
+  deleteAuthentications(where: [authenticationWhereUniqueInput!]!): [authentication]
+  createazureADIntegration(data: azureADIntegrationCreateInput!): azureADIntegration
+  createAzureADIntegrations(data: [azureADIntegrationCreateInput!]!): [azureADIntegration]
+  updateazureADIntegration(where: azureADIntegrationWhereUniqueInput!, data: azureADIntegrationUpdateInput!): azureADIntegration
+  updateAzureADIntegrations(data: [azureADIntegrationUpdateArgs!]!): [azureADIntegration]
+  deleteazureADIntegration(where: azureADIntegrationWhereUniqueInput!): azureADIntegration
+  deleteAzureADIntegrations(where: [azureADIntegrationWhereUniqueInput!]!): [azureADIntegration]
 }
 
 type Query {
   login(where: LoginWhereUniqueInput!): Login
   logins(where: LoginWhereInput! = {}, orderBy: [LoginOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LoginWhereUniqueInput): [Login!]
   loginsCount(where: LoginWhereInput! = {}): Int
-  ubicacione(where: UbicacioneWhereUniqueInput!): Ubicacione
-  ubicaciones(where: UbicacioneWhereInput! = {}, orderBy: [UbicacioneOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UbicacioneWhereUniqueInput): [Ubicacione!]
-  ubicacionesCount(where: UbicacioneWhereInput! = {}): Int
-  temperatura(where: TemperaturaWhereUniqueInput!): Temperatura
-  temperaturas(where: TemperaturaWhereInput! = {}, orderBy: [TemperaturaOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TemperaturaWhereUniqueInput): [Temperatura!]
-  temperaturasCount(where: TemperaturaWhereInput! = {}): Int
-  humedade(where: HumedadeWhereUniqueInput!): Humedade
-  humedades(where: HumedadeWhereInput! = {}, orderBy: [HumedadeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: HumedadeWhereUniqueInput): [Humedade!]
-  humedadesCount(where: HumedadeWhereInput! = {}): Int
+  usuario(where: UsuarioWhereUniqueInput!): Usuario
+  usuarios(where: UsuarioWhereInput! = {}, orderBy: [UsuarioOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UsuarioWhereUniqueInput): [Usuario!]
+  usuariosCount(where: UsuarioWhereInput! = {}): Int
+  fotoCielo(where: FotoCieloWhereUniqueInput!): FotoCielo
+  fotoCielos(where: FotoCieloWhereInput! = {}, orderBy: [FotoCieloOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: FotoCieloWhereUniqueInput): [FotoCielo!]
+  fotoCielosCount(where: FotoCieloWhereInput! = {}): Int
+  lecturaMeteorologia(where: LecturaMeteorologiaWhereUniqueInput!): LecturaMeteorologia
+  lecturaMeteorologias(where: LecturaMeteorologiaWhereInput! = {}, orderBy: [LecturaMeteorologiaOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LecturaMeteorologiaWhereUniqueInput): [LecturaMeteorologia!]
+  lecturaMeteorologiasCount(where: LecturaMeteorologiaWhereInput! = {}): Int
+  ubicacion(where: UbicacionWhereUniqueInput!): Ubicacion
+  ubicacions(where: UbicacionWhereInput! = {}, orderBy: [UbicacionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UbicacionWhereUniqueInput): [Ubicacion!]
+  ubicacionsCount(where: UbicacionWhereInput! = {}): Int
+  analisisFoto(where: AnalisisFotoWhereUniqueInput!): AnalisisFoto
+  analisisFotos(where: AnalisisFotoWhereInput! = {}, orderBy: [AnalisisFotoOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: AnalisisFotoWhereUniqueInput): [AnalisisFoto!]
+  analisisFotosCount(where: AnalisisFotoWhereInput! = {}): Int
+  authentication(where: authenticationWhereUniqueInput!): authentication
+  authentications(where: authenticationWhereInput! = {}, orderBy: [authenticationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: authenticationWhereUniqueInput): [authentication!]
+  authenticationsCount(where: authenticationWhereInput! = {}): Int
+  azureADIntegration(where: azureADIntegrationWhereUniqueInput!): azureADIntegration
+  azureADIntegrations(where: azureADIntegrationWhereInput! = {}, orderBy: [azureADIntegrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: azureADIntegrationWhereUniqueInput): [azureADIntegration!]
+  azureADIntegrationsCount(where: azureADIntegrationWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 

@@ -1,6 +1,13 @@
 import { config, list } from '@keystone-6/core';
 import { allowAll } from '@keystone-6/core/access';
 import { integer, text, timestamp } from '@keystone-6/core/fields';
+import { Usuario } from './schema/Usuario';
+import { FotoCielo } from './schema/FotoCielo';
+import { LecturaMeteorologia } from './schema/LecturaMeteorologia';
+import { AnalisisFoto } from './schema/AnalisisFoto';
+import { authentication } from './schema/Authentication';
+import { azureADIntegration } from './schema/AzureADIntegration';
+import { Ubicacion } from './schema/Ubicacion';
 
 export default config({
   db: {
@@ -17,32 +24,12 @@ export default config({
         passsword: text({ validation: { isRequired: true } }),
       },
     }),
-    Ubicacione: list({
-      access: allowAll,
-      fields: {
-        idLocacion: integer({ validation: { isRequired: true }, isIndexed: 'unique' }),
-        nombre: text({ validation: { isRequired: true } }),
-        latitud: integer({ validation: { isRequired: true } }),
-        longitud: integer({ validation: { isRequired: true } }),
-      },
-    }),
-    Temperatura: list({
-      access: allowAll,
-      fields: {
-        idTemperatura: integer({ validation: { isRequired: true }, isIndexed: 'unique' }),
-        valor: integer({ validation: { isRequired: true } }),
-        timestamp: timestamp({ validation: { isRequired: true } }),
-        idLocacion: text({ validation: { isRequired: true } }),
-      },
-    }),
-    Humedade: list({
-      access: allowAll,
-      fields: {
-        idHumedad: integer({ validation: { isRequired: true }, isIndexed: 'unique' }),
-        valor: integer({ validation: { isRequired: true } }),
-        timestamp: timestamp({ validation: { isRequired: true } }),
-        idLocacion: text({ validation: { isRequired: true } }),
-      },
-    }),
+    Usuario,
+    FotoCielo,
+    LecturaMeteorologia,
+    Ubicacion,
+    AnalisisFoto,
+    authentication,
+    azureADIntegration
   },
 });
