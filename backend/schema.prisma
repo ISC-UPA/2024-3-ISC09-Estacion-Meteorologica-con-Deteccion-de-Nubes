@@ -19,26 +19,83 @@ model Login {
   passsword String @default("")
 }
 
-model Ubicacione {
-  id         String @id @default(cuid())
-  idLocacion Int    @unique
-  nombre     String @default("")
-  latitud    Int
-  longitud   Int
+model Usuario {
+  id                                  String                @id @default(cuid())
+  usuario_id                          Int
+  nombre                              String                @default("")
+  email                               String                @unique @default("")
+  contrasena                          String
+  telefono                            String                @default("")
+  fecha_creacion                      DateTime?             @default(now())
+  fotos                               FotoCielo[]           @relation("Usuario_fotos")
+  lecturas                            LecturaMeteorologia[] @relation("Usuario_lecturas")
+  ubicaciones                         Ubicacion[]           @relation("Usuario_ubicaciones")
+  from_LecturaMeteorologia_usuario_id LecturaMeteorologia[] @relation("LecturaMeteorologia_usuario_id")
+  from_Ubicacion_usuario_id           Ubicacion[]           @relation("Ubicacion_usuario_id")
+  from_authentication_associatedUser  authentication[]      @relation("authentication_associatedUser")
 }
 
-model Temperatura {
-  id            String   @id @default(cuid())
-  idTemperatura Int      @unique
-  valor         Int
-  timestamp     DateTime
-  idLocacion    String   @default("")
+model FotoCielo {
+  id                               String                @id @default(cuid())
+  usuario_id                       Int
+  url_foto                         String                @default("")
+  fecha_foto                       DateTime?             @default(now())
+  from_Usuario_fotos               Usuario[]             @relation("Usuario_fotos")
+  from_LecturaMeteorologia_foto_id LecturaMeteorologia[] @relation("LecturaMeteorologia_foto_id")
+  from_AnalisisFoto_foto_id        AnalisisFoto[]        @relation("AnalisisFoto_foto_id")
 }
 
-model Humedade {
-  id         String   @id @default(cuid())
-  idHumedad  Int      @unique
-  valor      Int
-  timestamp  DateTime
-  idLocacion String   @default("")
+model LecturaMeteorologia {
+  id                    String     @id @default(cuid())
+  usuario_id            Usuario[]  @relation("LecturaMeteorologia_usuario_id")
+  foto_id               FotoCielo? @relation("LecturaMeteorologia_foto_id", fields: [foto_idId], references: [id])
+  foto_idId             String?    @map("foto_id")
+  temperatura           Float
+  presion_atmosferica   Float
+  humedad               Float
+  api                   Boolean    @default(false)
+  fecha_lectura         DateTime?  @default(now())
+  from_Usuario_lecturas Usuario[]  @relation("Usuario_lecturas")
+
+  @@index([foto_idId])
+}
+
+model Ubicacion {
+  id                       String    @id @default(cuid())
+  latitud                  Int
+  longitud                 Int
+  usuario_id               Usuario[] @relation("Ubicacion_usuario_id")
+  from_Usuario_ubicaciones Usuario[] @relation("Usuario_ubicaciones")
+}
+
+model AnalisisFoto {
+  id          String     @id @default(cuid())
+  foto_id     FotoCielo? @relation("AnalisisFoto_foto_id", fields: [foto_idId], references: [id])
+  foto_idId   String?    @map("foto_id")
+  descripcion String     @default("")
+  prediccion  String     @default("")
+
+  @@index([foto_idId])
+}
+
+model authentication {
+  id                    String    @id @default(cuid())
+  tokenId               String    @unique @default("")
+  associatedUser        Usuario?  @relation("authentication_associatedUser", fields: [associatedUserId], references: [id])
+  associatedUserId      String?   @map("associatedUser")
+  expirationDate        DateTime?
+  authenticationType    String?
+  adAuthenticationToken String    @default("")
+  refreshToken          String    @default("")
+
+  @@index([associatedUserId])
+}
+
+model azureADIntegration {
+  id                  String  @id @default(cuid())
+  adUserId            String  @unique @default("")
+  adTenantId          String  @default("")
+  roleMapping         String  @default("")
+  accessTokenValidity Boolean @default(false)
+  loginHistory        String  @default("")
 }

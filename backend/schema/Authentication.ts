@@ -5,7 +5,7 @@ export const authentication = {
   access: allowAll,
   fields: {
     tokenId: text({ validation: { isRequired: true }, isIndexed: 'unique' }),
-    associatedUser: relationship({ ref: 'User' }),
+    associatedUser: relationship({ ref: 'Usuario' }),
     expirationDate: timestamp(),
     authenticationType: select({
       options: [
