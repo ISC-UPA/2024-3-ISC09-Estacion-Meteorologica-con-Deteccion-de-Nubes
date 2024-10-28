@@ -11,77 +11,63 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Login {
-  id        String @id @default(cuid())
-  idUser    Int    @unique
-  nombre    String @default("")
-  username  String @default("")
-  passsword String @default("")
+model User {
+  id                                 String           @id @default(cuid())
+  name                               String           @default("")
+  email                              String           @unique @default("")
+  password                           String
+  phone                              String           @default("")
+  creation_date                      DateTime?        @default(now())
+  from_PhotoSky_user_id              PhotoSky[]       @relation("PhotoSky_user_id")
+  from_WeatheReading_user_id         WeatheReading[]  @relation("WeatheReading_user_id")
+  from_authentication_associatedUser authentication[] @relation("authentication_associatedUser")
 }
 
-model Usuario {
-  id                                  String                @id @default(cuid())
-  usuario_id                          Int
-  nombre                              String                @default("")
-  email                               String                @unique @default("")
-  contrasena                          String
-  telefono                            String                @default("")
-  fecha_creacion                      DateTime?             @default(now())
-  fotos                               FotoCielo[]           @relation("Usuario_fotos")
-  lecturas                            LecturaMeteorologia[] @relation("Usuario_lecturas")
-  ubicaciones                         Ubicacion[]           @relation("Usuario_ubicaciones")
-  from_LecturaMeteorologia_usuario_id LecturaMeteorologia[] @relation("LecturaMeteorologia_usuario_id")
-  from_Ubicacion_usuario_id           Ubicacion[]           @relation("Ubicacion_usuario_id")
-  from_authentication_associatedUser  authentication[]      @relation("authentication_associatedUser")
+model PhotoSky {
+  id                             String          @id @default(cuid())
+  user_id                        User[]          @relation("PhotoSky_user_id")
+  url_photo                      String          @default("")
+  latitude                       Float
+  longitude                      Float
+  date_photo                     DateTime?       @default(now())
+  from_AnalysisPhoto_skyphoto_id AnalysisPhoto[] @relation("AnalysisPhoto_skyphoto_id")
+  from_APIPredicion_skyphoto_id  APIPredicion[]  @relation("APIPredicion_skyphoto_id")
 }
 
-model FotoCielo {
-  id                               String                @id @default(cuid())
-  usuario_id                       Int
-  url_foto                         String                @default("")
-  fecha_foto                       DateTime?             @default(now())
-  from_Usuario_fotos               Usuario[]             @relation("Usuario_fotos")
-  from_LecturaMeteorologia_foto_id LecturaMeteorologia[] @relation("LecturaMeteorologia_foto_id")
-  from_AnalisisFoto_foto_id        AnalisisFoto[]        @relation("AnalisisFoto_foto_id")
+model WeatheReading {
+  id                   String    @id @default(cuid())
+  temperature          Float
+  atmospheric_pressure Float?
+  humidity             Float
+  api                  Boolean   @default(false)
+  reading_date         DateTime? @default(now())
+  user_id              User[]    @relation("WeatheReading_user_id")
 }
 
-model LecturaMeteorologia {
-  id                    String     @id @default(cuid())
-  usuario_id            Usuario[]  @relation("LecturaMeteorologia_usuario_id")
-  foto_id               FotoCielo? @relation("LecturaMeteorologia_foto_id", fields: [foto_idId], references: [id])
-  foto_idId             String?    @map("foto_id")
-  temperatura           Float
-  presion_atmosferica   Float
-  humedad               Float
-  api                   Boolean    @default(false)
-  fecha_lectura         DateTime?  @default(now())
-  from_Usuario_lecturas Usuario[]  @relation("Usuario_lecturas")
+model AnalysisPhoto {
+  id               String    @id @default(cuid())
+  skyphoto_id      PhotoSky? @relation("AnalysisPhoto_skyphoto_id", fields: [skyphoto_idId], references: [id])
+  skyphoto_idId    String?   @map("skyphoto_id")
+  sky_type         String    @default("")
+  probability_rain String    @default("")
 
-  @@index([foto_idId])
+  @@index([skyphoto_idId])
 }
 
-model Ubicacion {
-  id                       String    @id @default(cuid())
-  latitud                  Int
-  longitud                 Int
-  usuario_id               Usuario[] @relation("Ubicacion_usuario_id")
-  from_Usuario_ubicaciones Usuario[] @relation("Usuario_ubicaciones")
-}
+model APIPredicion {
+  id                  String    @id @default(cuid())
+  skyphoto_id         PhotoSky? @relation("APIPredicion_skyphoto_id", fields: [skyphoto_idId], references: [id])
+  skyphoto_idId       String?   @map("skyphoto_id")
+  prediction_per_day  String    @default("")
+  prediction_per_hour String    @default("")
 
-model AnalisisFoto {
-  id          String     @id @default(cuid())
-  foto_id     FotoCielo? @relation("AnalisisFoto_foto_id", fields: [foto_idId], references: [id])
-  foto_idId   String?    @map("foto_id")
-  descripcion String     @default("")
-  prediccion  String     @default("")
-
-  @@index([foto_idId])
+  @@index([skyphoto_idId])
 }
 
 model authentication {
   id                    String    @id @default(cuid())
   tokenId               String    @unique @default("")
-  associatedUser        Usuario?  @relation("authentication_associatedUser", fields: [associatedUserId], references: [id])
+  associatedUser        User?     @relation("authentication_associatedUser", fields: [associatedUserId], references: [id])
   associatedUserId      String?   @map("associatedUser")
   expirationDate        DateTime?
   authenticationType    String?
