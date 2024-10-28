@@ -11,34 +11,77 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Login {
-  id        String @id @default(cuid())
-  idUser    Int    @unique
-  nombre    String @default("")
-  username  String @default("")
-  passsword String @default("")
+model User {
+  id                                 String           @id @default(cuid())
+  name                               String           @default("")
+  email                              String           @unique @default("")
+  password                           String
+  phone                              String           @default("")
+  creation_date                      DateTime?        @default(now())
+  from_PhotoSky_user_id              PhotoSky[]       @relation("PhotoSky_user_id")
+  from_WeatheReading_user_id         WeatheReading[]  @relation("WeatheReading_user_id")
+  from_authentication_associatedUser authentication[] @relation("authentication_associatedUser")
 }
 
-model Ubicacione {
-  id         String @id @default(cuid())
-  idLocacion Int    @unique
-  nombre     String @default("")
-  latitud    Int
-  longitud   Int
+model PhotoSky {
+  id                             String          @id @default(cuid())
+  user_id                        User[]          @relation("PhotoSky_user_id")
+  url_photo                      String          @default("")
+  latitude                       Float
+  longitude                      Float
+  date_photo                     DateTime?       @default(now())
+  from_AnalysisPhoto_skyphoto_id AnalysisPhoto[] @relation("AnalysisPhoto_skyphoto_id")
+  from_APIPredicion_skyphoto_id  APIPredicion[]  @relation("APIPredicion_skyphoto_id")
 }
 
-model Temperatura {
-  id            String   @id @default(cuid())
-  idTemperatura Int      @unique
-  valor         Int
-  timestamp     DateTime
-  idLocacion    String   @default("")
+model WeatheReading {
+  id                   String    @id @default(cuid())
+  temperature          Float
+  atmospheric_pressure Float?
+  humidity             Float
+  api                  Boolean   @default(false)
+  reading_date         DateTime? @default(now())
+  user_id              User[]    @relation("WeatheReading_user_id")
 }
 
-model Humedade {
-  id         String   @id @default(cuid())
-  idHumedad  Int      @unique
-  valor      Int
-  timestamp  DateTime
-  idLocacion String   @default("")
+model AnalysisPhoto {
+  id               String    @id @default(cuid())
+  skyphoto_id      PhotoSky? @relation("AnalysisPhoto_skyphoto_id", fields: [skyphoto_idId], references: [id])
+  skyphoto_idId    String?   @map("skyphoto_id")
+  sky_type         String    @default("")
+  probability_rain String    @default("")
+
+  @@index([skyphoto_idId])
+}
+
+model APIPredicion {
+  id                  String    @id @default(cuid())
+  skyphoto_id         PhotoSky? @relation("APIPredicion_skyphoto_id", fields: [skyphoto_idId], references: [id])
+  skyphoto_idId       String?   @map("skyphoto_id")
+  prediction_per_day  String    @default("")
+  prediction_per_hour String    @default("")
+
+  @@index([skyphoto_idId])
+}
+
+model authentication {
+  id                    String    @id @default(cuid())
+  tokenId               String    @unique @default("")
+  associatedUser        User?     @relation("authentication_associatedUser", fields: [associatedUserId], references: [id])
+  associatedUserId      String?   @map("associatedUser")
+  expirationDate        DateTime?
+  authenticationType    String?
+  adAuthenticationToken String    @default("")
+  refreshToken          String    @default("")
+
+  @@index([associatedUserId])
+}
+
+model azureADIntegration {
+  id                  String  @id @default(cuid())
+  adUserId            String  @unique @default("")
+  adTenantId          String  @default("")
+  roleMapping         String  @default("")
+  accessTokenValidity Boolean @default(false)
+  loginHistory        String  @default("")
 }
