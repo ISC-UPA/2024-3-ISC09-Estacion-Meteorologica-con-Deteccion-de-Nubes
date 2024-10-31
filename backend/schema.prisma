@@ -17,6 +17,7 @@ model User {
   email                              String           @unique @default("")
   password                           String
   phone                              String           @default("")
+  sucription_premiun                 Boolean          @default(true)
   creation_date                      DateTime?        @default(now())
   from_PhotoSky_user_id              PhotoSky[]       @relation("PhotoSky_user_id")
   from_WeatheReading_user_id         WeatheReading[]  @relation("WeatheReading_user_id")
