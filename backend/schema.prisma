@@ -17,8 +17,9 @@ model User {
   email                              String           @unique @default("")
   password                           String
   phone                              String           @default("")
-  sucription_premiun                 Boolean          @default(true)
+  premiun_sucription                 Boolean          @default(true)
   creation_date                      DateTime?        @default(now())
+  end_suscription_date               DateTime?
   from_PhotoSky_user_id              PhotoSky[]       @relation("PhotoSky_user_id")
   from_WeatheReading_user_id         WeatheReading[]  @relation("WeatheReading_user_id")
   from_authentication_associatedUser authentication[] @relation("authentication_associatedUser")
@@ -30,6 +31,7 @@ model PhotoSky {
   url_photo                      String          @default("")
   latitude                       Float
   longitude                      Float
+  api                            Boolean         @default(false)
   date_photo                     DateTime?       @default(now())
   from_AnalysisPhoto_skyphoto_id AnalysisPhoto[] @relation("AnalysisPhoto_skyphoto_id")
   from_APIPredicion_skyphoto_id  APIPredicion[]  @relation("APIPredicion_skyphoto_id")
