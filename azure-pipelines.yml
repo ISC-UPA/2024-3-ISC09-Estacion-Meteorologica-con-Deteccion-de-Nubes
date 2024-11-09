@@ -43,6 +43,7 @@ stages:
         repository: 'cloudy-api'
         command: 'push'
         tags: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+        
 
 - stage: Deploy
   displayName: Deploy to Azure Web
