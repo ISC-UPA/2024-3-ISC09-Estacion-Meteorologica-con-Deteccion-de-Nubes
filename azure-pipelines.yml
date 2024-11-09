@@ -25,7 +25,9 @@ stages:
         command: 'build'
         Dockerfile: '**/Dockerfile'
         arguments: '-t cloudy-api'
+
     - task: Docker@2
+      displayName: Tag the image
       inputs:
         containerRegistry: '$(containerReg)'
         repository: 'cloudy-api'
@@ -33,16 +35,15 @@ stages:
         arguments: 'cloudy-api:latest cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
+
     - task: Docker@2
-      displayName: Push an image
+      displayName: Push the image
       inputs:
         containerRegistry: '$(containerReg)'
         repository: 'cloudy-api'
         command: 'push'
         tags: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
-        arguments: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
-        addPipelineData: false
-        addBaseImageData: false
+
 - stage: Deploy
   displayName: Deploy to Azure Web
   dependsOn: Build
@@ -52,11 +53,11 @@ stages:
     steps:
     - task: AzureWebAppContainer@1
       inputs:
-        azureSubscription: $(azureSub)
+        azureSubscription: '$(azureSub)'
         appName: 'Cloudy-api'
         deployToSlotOrASE: true
         resourceGroupName: 'Cloudy'
         slotName: 'production'
         containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         containerCommand: 'docker run --workdir=/app -p 443:3000'
-        acrUsername: $(acrUser)
+        acrUsername: '$(acrUser)'
