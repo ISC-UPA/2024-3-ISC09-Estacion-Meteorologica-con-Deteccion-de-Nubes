@@ -23,12 +23,12 @@ stages:
         containerRegistry: $(containerReg)
         command: build
         dockerfile: '**/backend/Dockerfile'
-        arguments: '-t Cloudy-api'
+        arguments: '-t cloudy-api'
     - task: Docker@2
       inputs:
         containerRegistry: $(containerReg)
         command: 'tag'
-        arguments: 'Cloudy-api:latest cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
+        arguments: 'cloudy-api:latest cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
     - task: Docker@2
@@ -36,8 +36,8 @@ stages:
       inputs:
         containerRegistry: $(containerReg)
         command: 'push'
-        tags: 'cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
-        arguments: 'cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
+        tags: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+        arguments: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
 - stage: Deploy
@@ -54,7 +54,7 @@ stages:
         deployToSlotOrASE: true
         resourceGroupName: 'Cloudy'
         slotName: 'production'
-        containers: 'cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
+        containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         containerCommand: 'docker run --workdir=/app -p 443:3000'
         acrUsername: $(acrUser)
         acrPassword: $(acrPas)
