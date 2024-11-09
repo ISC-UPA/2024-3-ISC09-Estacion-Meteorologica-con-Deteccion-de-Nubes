@@ -42,7 +42,7 @@ stages:
         containerRegistry: '$(containerReg)'
         repository: 'cloudy-api'
         command: 'push'
-        tags: '$(Build.BuildId):latest'
+        tags: ':latest'
         
 
 - stage: Deploy
