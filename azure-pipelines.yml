@@ -28,7 +28,7 @@ stages:
       inputs:
         containerRegistry: $(containerReg)
         command: 'tag'
-        arguments: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+        arguments: 'cloudy-api:latest cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
     - task: Docker@2
