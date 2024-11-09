@@ -42,8 +42,6 @@ stages:
         containerRegistry: $(containerReg)
         repository: 'cloudy-api'
         command: 'push'
-        tags: $(containerReg)/$(repository):latest
-        arguments: $(containerReg)/$(repository):latest
         
 
 - stage: Deploy
