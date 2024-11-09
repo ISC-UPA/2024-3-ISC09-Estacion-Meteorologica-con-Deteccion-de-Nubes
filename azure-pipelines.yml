@@ -8,10 +8,6 @@ pool:
   name: 'Self-Hosted-Pool'
 
 variables:
-  dockerRegistryServiceConnection: '1d20f035-29a3-4112-b566-110a1efd4a28'
-  imageRepository: 'cloudyapi'
-  containerRegistry: 'cloudycontainerregistry.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
 
 stages:
@@ -24,13 +20,13 @@ stages:
     - task: Docker@2
       displayName: Build an image
       inputs:
-        containerRegistry: 'cloudycontainerregistry.azurecr.io'
+        containerRegistry: $(containerReg)
         command: build
         dockerfile: '**/backend/Dockerfile'
         arguments: '-t Cloudy-api'
     - task: Docker@2
       inputs:
-        containerRegistry: 'cloudycontainerregistry.azurecr.io'
+        containerRegistry: $(containerReg)
         command: 'tag'
         arguments: 'Cloudy-api:latest cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
         addPipelineData: false
@@ -38,7 +34,7 @@ stages:
     - task: Docker@2
       displayName: Push an image
       inputs:
-        containerRegistry: 'cloudycontainerregistry.azurecr.io'
+        containerRegistry: $(containerReg)
         command: 'push'
         tags: 'cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
         arguments: 'cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
@@ -53,12 +49,12 @@ stages:
     steps:
     - task: AzureWebAppContainer@1
       inputs:
-        azureSubscription: 'Azure for Students(499e186f-6f01-4da4-aa17-f2fcbd575485)'
+        azureSubscription: $(azureSub)
         appName: 'Cloudy-api'
         deployToSlotOrASE: true
         resourceGroupName: 'Cloudy'
         slotName: 'production'
         containers: 'cloudycontainerregistry.azurecr.io/Cloudy-api:latest'
         containerCommand: 'docker run --workdir=/app -p 443:3000'
-        acrUsername: 'CloudyContainerRegistry'
-        acrPassword: 'QwXips86bx1ZRzr/R3V6sNNLQ1tL5uKRsqKHnXAy80+ACRBDDqRs'
+        acrUsername: $(acrUser)
+        acrPassword: $(acrPas)
