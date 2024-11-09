@@ -21,14 +21,12 @@ stages:
       displayName: Build an image
       inputs:
         containerRegistry: $(containerReg)
-        repository: 'cloudy-api'
-        command: 'build'
-        Dockerfile: '**/Dockerfile'
+        command: build
+        dockerfile: '**/backend/Dockerfile'
         arguments: '-t cloudy-api'
     - task: Docker@2
       inputs:
         containerRegistry: $(containerReg)
-        repository: 'cloudy-api'
         command: 'tag'
         arguments: 'cloudy-api:latest cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
@@ -37,7 +35,6 @@ stages:
       displayName: Push an image
       inputs:
         containerRegistry: $(containerReg)
-        repository: 'cloudy-api'
         command: 'push'
         tags: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         arguments: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
@@ -60,4 +57,3 @@ stages:
         containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         containerCommand: 'docker run --workdir=/app -p 443:3000'
         acrUsername: $(acrUser)
-        acrPassword: $(acrPas)
