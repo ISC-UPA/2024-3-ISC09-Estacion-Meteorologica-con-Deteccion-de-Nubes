@@ -30,7 +30,7 @@ stages:
         containerRegistry: $(containerReg)
         repository: 'cloudy-api'
         command: 'tag'
-        arguments: 'cloudy-api:latest $(containerReg)/cloudy-api:latest'
+        arguments: 'cloudy-api:latest cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
     - task: Docker@2
@@ -39,7 +39,8 @@ stages:
         containerRegistry: $(containerReg)
         repository: 'cloudy-api'
         command: 'push'
-        tags: '$(containerReg)/cloudy-api:latest'
+        tags: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+        arguments: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
 - stage: Deploy
