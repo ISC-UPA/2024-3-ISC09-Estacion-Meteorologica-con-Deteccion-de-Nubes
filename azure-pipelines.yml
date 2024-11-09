@@ -40,7 +40,6 @@ stages:
         repository: 'cloudy-api'
         command: 'push'
         tags: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
-        arguments: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         addPipelineData: false
         addBaseImageData: false
 - stage: Deploy
