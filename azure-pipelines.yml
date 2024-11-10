@@ -55,7 +55,7 @@ stages:
     - task: AzureWebAppContainer@1
       inputs:
         azureSubscription: '$(azureSub)'
-        appName: 'Cloudy-api'
+        appName: 'cloudy-api'
         deployToSlotOrASE: true
         resourceGroupName: 'Cloudy'
         slotName: 'production'
