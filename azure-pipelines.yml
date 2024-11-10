@@ -59,6 +59,6 @@ stages:
         deployToSlotOrASE: true
         resourceGroupName: 'Cloudy'
         slotName: 'production'
-        containers: 'cloudycontainerregistry.azurecr.io/$(repository):latest'
+        containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         containerCommand: 'docker run --workdir=/app -p 443:3000'
         acrUsername: '$(acrUser)'
