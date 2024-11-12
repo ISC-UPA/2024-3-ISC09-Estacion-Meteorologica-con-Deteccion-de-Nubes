@@ -1,37 +1,61 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Tabs } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const Tab = createBottomTabNavigator();
+
+const EmptyScreen = () => null;
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+      tabBarActiveTintColor: 'blue',
+      tabBarInactiveTintColor: 'blue',
+      headerShown: false,
+      tabBarStyle: {
+        backgroundColor: 'rgba(200, 200, 200, 0.7)',
+        position: 'absolute',
+        borderTopWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+    }}
+    >
+
+      <Tabs.Screen
+        name="menu"
+        options={{
+          title: 'Menu',
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name= 'menu-sharp' color={color} size={24} />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
           ),
         }}
       />
+
       <Tabs.Screen
-        name="explore"
+        name="favorites"
         options={{
-          title: 'Explore',
+          title: 'Favorites',
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <Ionicons name= 'heart' color={color} size={24} />
           ),
         }}
-      />
-    </Tabs>
+      />    
+  </Tabs>
   );
 }
