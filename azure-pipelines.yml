@@ -20,9 +20,17 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'CloudyContainerRegistry'
-        repository: 'API'
-        command: 'buildAndPush'
+        command: 'build'
         Dockerfile: '**/backend/Dockerfile'
+        arguments: '-t cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'CloudyContainerRegistry'
+        repository: 'cloudy-api'
+        command: 'push'
+        tags: 'latest'
+
 - stage: Deploy
   displayName: Deploy to Azure Web
   dependsOn: Build
@@ -30,10 +38,8 @@ stages:
   - job: Deploy
     displayName: Deploy
     steps:    
-    - task: AzureRmWebAppDeployment@4
+    - task: AzureWebAppContainer@1
       inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Azure for Students(499e186f-6f01-4da4-aa17-f2fcbd575485)'
-        appType: 'webAppLinux'
-        WebAppName: 'Cloudy-api'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        azureSubscription: 'Azure for Students(1)(499e186f-6f01-4da4-aa17-f2fcbd575485)'
+        appName: 'Cloudy-api'
+        containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
