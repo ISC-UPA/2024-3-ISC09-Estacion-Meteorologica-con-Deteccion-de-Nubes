@@ -43,3 +43,4 @@ stages:
         azureSubscription: 'Azure for Students(1)(499e186f-6f01-4da4-aa17-f2fcbd575485)'
         appName: 'Cloudy-api'
         containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+        appSettings: '-Port 3000'
