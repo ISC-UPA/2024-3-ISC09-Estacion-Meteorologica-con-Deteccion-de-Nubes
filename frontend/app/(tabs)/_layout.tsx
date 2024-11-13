@@ -24,7 +24,7 @@ export default function TabLayout() {
     }}
     >
 
-      <Tabs.Screen
+     {/* <Tabs.Screen
         name="menu"
         options={{
           title: 'Menu',
@@ -33,7 +33,7 @@ export default function TabLayout() {
             <Ionicons name= 'menu-sharp' color={color} size={24} />
           ),
         }}
-      />
+      />*/}
 
       <Tabs.Screen
         name="index"
@@ -46,7 +46,7 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen
+      {/*<Tabs.Screen
         name="favorites"
         options={{
           title: 'Favorites',
@@ -55,7 +55,7 @@ export default function TabLayout() {
             <Ionicons name= 'heart' color={color} size={24} />
           ),
         }}
-      />    
+      /> */}   
   </Tabs>
   );
 }

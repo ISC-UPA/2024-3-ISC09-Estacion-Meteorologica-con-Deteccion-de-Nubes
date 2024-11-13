@@ -35,7 +35,7 @@ export default function WeatherScreen() {
       <View style={styles.container}>
         <View style={styles.firstDivider} />
         <View style={styles.topRow}>
-          <AtmosphericPressureCard icon="weather-sunny" pressure={1020.0} />
+          <AtmosphericPressureCard icon="sunny" pressure={1020.0} />
           <TemperatureAndHumidityCard
             temperature={25}
             humidity={10}
