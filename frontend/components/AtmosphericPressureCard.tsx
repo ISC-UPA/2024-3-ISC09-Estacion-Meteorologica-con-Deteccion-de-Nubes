@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 interface AtmosphericPressureCardProps {
   icon: keyof typeof Ionicons.glyphMap;   
@@ -12,9 +12,12 @@ const AtmosphericPressureCard: React.FC<AtmosphericPressureCardProps> = ({ icon,
   return (
     <Card style={styles.card}>
       <Card.Content style={styles.content}>
-        <Ionicons name={icon} size={36} color="white" style={styles.icon} />
+      <Ionicons name={icon} size={60} color="white" style={styles.icon} />
+      <View style={styles.row}>
+        <MaterialIcons name='compress' size={20} color="white" />
         <Text style={styles.pressure}>{pressure}mb</Text>
-      </Card.Content>
+      </View>
+    </Card.Content>
     </Card>
   );
 };
@@ -22,7 +25,7 @@ const AtmosphericPressureCard: React.FC<AtmosphericPressureCardProps> = ({ icon,
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 15,
     width: 110,
     alignItems: 'center',
@@ -31,11 +34,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   pressure: {
     fontSize: 16,
     color: 'white',
+    marginLeft: 5,
+    fontFamily: 'Quicksand_700Bold',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

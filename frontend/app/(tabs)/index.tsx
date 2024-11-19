@@ -9,21 +9,21 @@ import WeeklyForecast from '../../components/WeeklyForecast';
 
 
 const hourlyForecastData = [
-  { time: 'Now', icon: 'weather-sunny', temperature: 25 },
-  { time: '4PM', icon: 'weather-sunny', temperature: 25 },
-  { time: '5PM', icon: 'weather-sunny', temperature: 24 },
-  { time: '6PM', icon: 'weather-sunny', temperature: 23 },
-  { time: '7PM', icon: 'weather-night', temperature: 22 },
+  { time: 'Now', icon: "sunny", temperature: 25 },
+  { time: '4P.M', icon: "sunny", temperature: 25 },
+  { time: '5P.M', icon: "sunny", temperature: 24 },
+  { time: '6P.M', icon: "sunny", temperature: 23 },
+  { time: '7P.M', icon: "cloudy-night-sharp", temperature: 22 },
 ];
 
 const weeklyForecastData = [
-  { day: 'Today', icon: 'weather-sunny', temperature: 21 },
-  { day: 'Tuesday', icon: 'weather-sunny', temperature: 21 },
-  { day: 'Wednesday', icon: 'weather-sunny', temperature: 21 },
-  { day: 'Thursday', icon: 'weather-sunny', temperature: 21 },
-  { day: 'Friday', icon: 'weather-cloudy', temperature: 21 }, 
-  { day: 'Saturday', icon: 'weather-cloudy', temperature: 21 },
-  { day: 'Sunday', icon: 'weather-cloudy', temperature: 21 },
+  { day: 'Today', icon: "sunny", temperature: "20°" },
+  { day: 'Tuesday', icon: "sunny", temperature: "20°" },
+  { day: 'Wednesday', icon: "sunny", temperature: "20°" },
+  { day: 'Thursday', icon: "sunny", temperature: "20°" },
+  { day: 'Friday', icon: "cloudy-sharp", temperature: "20°" }, 
+  { day: 'Saturday', icon: "cloudy-sharp", temperature: "20°" },
+  { day: 'Sunday', icon: "cloudy-sharp", temperature: "20°" },
 ];
 
 export default function WeatherScreen() {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   divider: {
     borderBottomColor: '#cccc',
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   firstDivider: {
     borderBottomColor: '#cccc',
     borderBottomWidth: 3,
-    marginBottom: 15,
+    marginBottom: 10,
     marginHorizontal: 5,
     borderRadius: 40,  
   },
