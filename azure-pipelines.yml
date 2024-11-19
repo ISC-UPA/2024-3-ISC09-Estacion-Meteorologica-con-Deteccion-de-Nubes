@@ -18,32 +18,18 @@ stages:
     displayName: Build
     steps:
     - task: Docker@2
-      displayName: Build an image
       inputs:
-        containerRegistry: $(containerReg)
-        repository: $(repository)
+        containerRegistry: 'CloudyContainerRegistry'
         command: 'build'
-        Dockerfile: '**/Dockerfile'
-        arguments: '-t cloudy-api'
-
+        Dockerfile: '**/backend/Dockerfile'
+        arguments: '-t cloudycontainerregistry.azurecr.io/cloudy-api:latest'
+    
     - task: Docker@2
-      displayName: Tag the image
       inputs:
-        containerRegistry: $(containerReg)
-        repository: $(repository)
-        command: 'tag'
-        arguments: 'cloudy-api:latest  cloudycontainerregistry.azurecr.io/cloudy-api:latest'
-        addPipelineData: false
-        addBaseImageData: false
-
-    - task: Docker@2
-      displayName: Push the image
-      inputs:
-        containerRegistry: '$(containerReg)'
+        containerRegistry: 'CloudyContainerRegistry'
         repository: 'cloudy-api'
         command: 'push'
         tags: 'latest'
-        
 
 - stage: Deploy
   displayName: Deploy to Azure Web
@@ -51,15 +37,10 @@ stages:
   jobs:
   - job: Deploy
     displayName: Deploy
-    steps:
+    steps:    
     - task: AzureWebAppContainer@1
       inputs:
-        azureSubscription: 'Azure for Students(499e186f-6f01-4da4-aa17-f2fcbd575485)'
+        azureSubscription: 'Azure for Students(1)(499e186f-6f01-4da4-aa17-f2fcbd575485)'
         appName: 'Cloudy-api'
-        deployToSlotOrASE: true
-        resourceGroupName: 'Cloudy'
-        slotName: 'production'
         containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
-        containerCommand: 'docker run --workdir=/app -p 443:3000'
-        acrUsername: $(acrUser)
-        acrPassword: $(acrPas)
+        appSettings: '-Port 3000'
