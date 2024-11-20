@@ -1,0 +1,3 @@
+azure_storage_connectionstring: "DefaultEndpointsProtocol=https;AccountName=cloudyphotos;AccountKey=BqX/WDTh14H4YtSHm4to7KNX6616GaxehYSp5nU8pd1ZKAI0Od5O848GkK1nSJZgbvjWQpY7AkOz+AStXj0WMA==;EndpointSuffix=core.windows.net"
+pictures_container_name: "fotos"
+source_folder: "/home/pi/Documents/CLOUDY"
