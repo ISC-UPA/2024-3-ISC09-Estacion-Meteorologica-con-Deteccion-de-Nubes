@@ -11,21 +11,17 @@ import { TouchableOpacity } from 'react-native';
     const [isDrawerVisible, setDrawerVisible] = useState(false);
 
     const handleOpenDrawer = () => setDrawerVisible(true);
-    const handleCloseDrawer = () => setDrawerVisible(false);
 
     return (
       <>
-        {/* Drawer Modal */}
         <AppDrawer navigation={navigation} drawerVisible={isDrawerVisible} setDrawerVisible={setDrawerVisible} />
-
-        {/* Tab Navigation */}
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: 'blue',
             tabBarInactiveTintColor: 'blue',
             headerShown: false,
             tabBarStyle: {
-              backgroundColor: 'rgba(200, 200, 200, 0.7)',
+              backgroundColor: 'rgba(200, 200, 200, 0.3)',
               position: 'absolute',
               borderTopWidth: 0,
               elevation: 0,

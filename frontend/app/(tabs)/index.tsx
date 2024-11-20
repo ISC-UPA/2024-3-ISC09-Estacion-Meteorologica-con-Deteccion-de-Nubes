@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
-import { Text } from 'react-native-paper';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import TemperatureAndHumidityCard from '../../components/TemperatureAndHumidityCard';
 import AtmosphericPressureCard from '../../components/AtmosphericPressureCard';
 import HourlyForecast from '../../components/HourlyForecast';

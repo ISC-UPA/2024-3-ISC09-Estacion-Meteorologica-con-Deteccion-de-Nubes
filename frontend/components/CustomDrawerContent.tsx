@@ -1,113 +1,96 @@
-import { Ionicons } from '@expo/vector-icons';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 interface SideMenuProps {
   visible: boolean;
   onClose: () => void;
-  navigation: any; // Type the navigation prop accordingly
+  navigation: any; 
 }
 
 export default function CustomDrawerContent(props: SideMenuProps) {
-  const slideAnim = useRef(new Animated.Value(-300)).current; // Initial position off-screen to the left
+  const slideAnim = useRef(new Animated.Value(-300)).current; 
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (props.visible) {
       Animated.timing(slideAnim, {
-        toValue: 0, // Slide to the visible position
+        toValue: 0, 
         duration: 300,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(slideAnim, {
-        toValue: -300, // Slide out of view
+        toValue: -300, 
         duration: 300,
         useNativeDriver: true,
       }).start();
     }
   }, [props.visible]);
 
+  const renderDrawerItem = (label: string, iconName: string, navigateTo: string, isSettings: boolean = false) => (
+    <TouchableOpacity
+      style={styles.drawerItem}
+      onPress={() => {
+        if (!isSettings) {
+          props.navigation.navigate(navigateTo);
+          props.onClose();
+        }
+      }}
+    >
+      <View style={styles.itemLeft}>
+        {!isSettings && (
+          <>
+            <Ionicons name={iconName} size={22} color="#888" />
+            <Text style={styles.itemLabel}>{label}</Text>
+          </>
+        )}
+      </View>
+      {!isSettings && <Ionicons name="chevron-forward-outline" size={22} color="#888" style={styles.itemRight} />}
+      {isSettings && <Ionicons name={iconName} size={35} color="#888" style={styles.settingsIcon} />}
+    </TouchableOpacity>
+  );
+
   return (
     <Modal
       visible={props.visible}
       transparent={true}
-      animationType="none" // Disable default animations
+      animationType="none" 
       onRequestClose={props.onClose}
     >
       <TouchableOpacity style={styles.overlay} onPress={props.onClose}>
         <Animated.View
-          style={[
-            styles.modalContainer,
-            { transform: [{ translateX: slideAnim }] }, // Apply slide animation
-          ]}
-        >
-          <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
-            {/* Profile Section */}
+          style={[styles.modalContainer, { transform: [{ translateX: slideAnim }] }]}>
+          <DrawerContentScrollView contentContainerStyle={styles.container}>
+            <TouchableOpacity style={styles.closeIcon} onPress={props.onClose}>
+              <MaterialCommunityIcons name="menu-open" size={35} color="blue" />
+            </TouchableOpacity>
+            
             <View style={styles.profileSection}>
               <Image
-                source={{ uri: 'https://via.placeholder.com/80' }} // Placeholder profile image
+                source={require('../assets/images/default-image.jpg')}
                 style={styles.profileImage}
               />
               <Text style={styles.profileName}>Test Testerson</Text>
               <Text style={styles.profileEmail}>correo@correo.com</Text>
             </View>
 
-            {/* Navigation Items */}
             <View style={styles.menuItems}>
-              <DrawerItem
-                label="Weather"
-                icon={({ color, size }) => <Ionicons name="cloud-outline" color={color} size={size} />}
-                onPress={() => {
-                  props.navigation.navigate('Weather');
-                  props.onClose(); // Close modal after navigation
-                }}
-              />
-              <DrawerItem
-                label="History"
-                icon={({ color, size }) => <Ionicons name="time-outline" color={color} size={size} />}
-                onPress={() => {
-                  props.navigation.navigate('History');
-                  props.onClose(); // Close modal after navigation
-                }}
-              />
-              <DrawerItem
-                label="My locations"
-                icon={({ color, size }) => <Ionicons name="location-outline" color={color} size={size} />}
-                onPress={() => {
-                  props.navigation.navigate('MyLocations');
-                  props.onClose(); // Close modal after navigation
-                }}
-              />
-              <DrawerItem
-                label="Favorites"
-                icon={({ color, size }) => <Ionicons name="heart-outline" color={color} size={size} />}
-                onPress={() => {
-                  props.navigation.navigate('Favorites');
-                  props.onClose(); // Close modal after navigation
-                }}
-              />
-              <DrawerItem
-                label="Go premium"
-                icon={({ color, size }) => <Ionicons name="diamond-outline" color={color} size={size} />}
-                onPress={() => {
-                  props.navigation.navigate('Premium');
-                  props.onClose(); // Close modal after navigation
-                }}
-              />
+              {renderDrawerItem('Weather', 'cloud-outline', 'Wheater')}
+              {renderDrawerItem('History', 'time-outline', 'drawer/HistoryScreen')}
+              {renderDrawerItem('My locations', 'location-outline', 'drawer/MyLocationsScreen')}
+              {renderDrawerItem('Favorites', 'heart-outline', 'drawer/FavoritesScreen')}
+            </View>
+            <View style={{ flex: 1 }} />
+            <View style={styles.bottomItems}>
+              <View style={{ marginBottom: 60 }}>
+                {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremium')}
+              </View>
+              {renderDrawerItem('Settings', 'settings-outline', 'drawer/SettingsScreen', true)}
             </View>
 
-            {/* Settings */}
-            <View style={styles.footer}>
-              <DrawerItem
-                label="Settings"
-                icon={({ color, size }) => <Ionicons name="settings-outline" color={color} size={size} />}
-                onPress={() => {
-                  props.navigation.navigate('Settings');
-                  props.onClose(); // Close modal after navigation
-                }}
-              />
-            </View>
           </DrawerContentScrollView>
         </Animated.View>
       </TouchableOpacity>
@@ -134,20 +117,20 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   profileSection: {
-    padding: 20,
+    paddingTop: 90,
+    paddingBottom: 45, 
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
   },
   profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 90,
+    height: 90,
+    borderRadius: 60,
     marginBottom: 10,
   },
   profileName: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
   profileEmail: {
     fontSize: 14,
@@ -156,9 +139,38 @@ const styles = StyleSheet.create({
   menuItems: {
     paddingVertical: 10,
   },
-  footer: {
-    borderTopWidth: 1,
-    borderTopColor: '#e0e0e0',
-    paddingVertical: 10,
+  closeIcon: {
+    position: 'absolute',
+    top: 10,
+    left: 10, 
+    zIndex: 10,
+  },
+  drawerItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  itemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemLabel: {
+    marginLeft: 15,
+    fontSize: 16,
+    color: '#000',
+  },
+  itemRight: {
+    marginLeft: 'auto',
+  },
+  settingsIcon: {
+    position: 'absolute',
+    bottom: 30,
+    right: 5,
+    paddingRight: 15,
+  },
+  bottomItems: {
+    marginTop: 'auto', 
   },
 });

@@ -3,7 +3,7 @@ import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
 
 interface AppDrawerProps {
-  navigation: NavigationProp<any>; // Replace `any` with your app's param list type if available
+  navigation: NavigationProp<any>;
   drawerVisible: boolean;
   setDrawerVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
