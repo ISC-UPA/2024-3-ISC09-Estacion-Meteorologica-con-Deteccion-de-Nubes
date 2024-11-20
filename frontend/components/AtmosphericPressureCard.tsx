@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, Card } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 interface AtmosphericPressureCardProps {
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;  
+  icon: keyof typeof Ionicons.glyphMap;   
   pressure: number | string; 
 }
 
@@ -12,7 +12,7 @@ const AtmosphericPressureCard: React.FC<AtmosphericPressureCardProps> = ({ icon,
   return (
     <Card style={styles.card}>
       <Card.Content style={styles.content}>
-        <MaterialCommunityIcons name={icon} size={36} color="white" style={styles.icon} />
+        <Ionicons name={icon} size={36} color="white" style={styles.icon} />
         <Text style={styles.pressure}>{pressure}mb</Text>
       </Card.Content>
     </Card>
