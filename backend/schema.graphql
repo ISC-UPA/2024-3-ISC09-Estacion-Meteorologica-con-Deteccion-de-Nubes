@@ -7,8 +7,9 @@ type User {
   email: String
   password: PasswordState
   phone: String
-  sucription_premiun: Boolean
+  premiun_sucription: Boolean
   creation_date: DateTime
+  end_suscription_date: DateTime
 }
 
 type PasswordState {
@@ -30,8 +31,9 @@ input UserWhereInput {
   name: StringFilter
   email: StringFilter
   phone: StringFilter
-  sucription_premiun: BooleanFilter
+  premiun_sucription: BooleanFilter
   creation_date: DateTimeNullableFilter
+  end_suscription_date: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -94,8 +96,9 @@ input UserOrderByInput {
   name: OrderDirection
   email: OrderDirection
   phone: OrderDirection
-  sucription_premiun: OrderDirection
+  premiun_sucription: OrderDirection
   creation_date: OrderDirection
+  end_suscription_date: OrderDirection
 }
 
 enum OrderDirection {
@@ -108,8 +111,9 @@ input UserUpdateInput {
   email: String
   password: String
   phone: String
-  sucription_premiun: Boolean
+  premiun_sucription: Boolean
   creation_date: DateTime
+  end_suscription_date: DateTime
 }
 
 input UserUpdateArgs {
@@ -122,8 +126,9 @@ input UserCreateInput {
   email: String
   password: String
   phone: String
-  sucription_premiun: Boolean
+  premiun_sucription: Boolean
   creation_date: DateTime
+  end_suscription_date: DateTime
 }
 
 type PhotoSky {
@@ -133,6 +138,7 @@ type PhotoSky {
   url_photo: String
   latitude: Float
   longitude: Float
+  api: Boolean
   date_photo: DateTime
 }
 
@@ -149,6 +155,7 @@ input PhotoSkyWhereInput {
   url_photo: StringFilter
   latitude: FloatFilter
   longitude: FloatFilter
+  api: BooleanFilter
   date_photo: DateTimeNullableFilter
 }
 
@@ -174,6 +181,7 @@ input PhotoSkyOrderByInput {
   url_photo: OrderDirection
   latitude: OrderDirection
   longitude: OrderDirection
+  api: OrderDirection
   date_photo: OrderDirection
 }
 
@@ -182,6 +190,7 @@ input PhotoSkyUpdateInput {
   url_photo: String
   latitude: Float
   longitude: Float
+  api: Boolean
   date_photo: DateTime
 }
 
@@ -202,6 +211,7 @@ input PhotoSkyCreateInput {
   url_photo: String
   latitude: Float
   longitude: Float
+  api: Boolean
   date_photo: DateTime
 }
 
