@@ -1,0 +1,3 @@
+azure_storage_connectionstring: "DefaultEndpointsProtocol=https;AccountName=miprimertest;AccountKey=sphSYXIxBRuLyjda7g/qP34PxnHNpDDazk4AFbtp2jNCDMD2bf0YSeVzpV9z9tzhH9W3LM15oWlr+AStwwVtaQ==;EndpointSuffix=core.windows.net"
+pictures_container_name: "photos"
+source_folder: "C:/Users/david/Documents/UPA/9no Cuatrimestre/Programacion Movil/CustomVisionTest/"
