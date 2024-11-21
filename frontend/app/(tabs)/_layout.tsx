@@ -34,7 +34,7 @@ import { TouchableOpacity } from 'react-native';
             options={{
               title: '',
               tabBarIcon: ({ color, focused }) => (
-                <Ionicons name={focused ? 'menu-sharp' : 'menu-outline'} color={color} size={24} />
+                <Ionicons name={focused ? 'menu-sharp' : 'menu-outline'} color={color} size={30} />
               ),
               tabBarButton: (props) => (
                 <TouchableOpacity
@@ -60,7 +60,7 @@ import { TouchableOpacity } from 'react-native';
             options={{
               title: '',
               tabBarIcon: ({ color, focused }) => (
-                <FontAwesome name="heart" size={24} color={color} />
+                <FontAwesome name="heart" size={22} color={color} />
               ),
             }}
           />
