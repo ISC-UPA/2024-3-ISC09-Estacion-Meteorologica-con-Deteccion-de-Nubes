@@ -1,10 +1,10 @@
 import AppDrawer from '@/app/(tabs)/AppDrawer';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { Tabs } from 'expo-router';
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
-
 
   const TabLayout = () => {
     const navigation = useNavigation();
@@ -54,7 +54,20 @@ import { TouchableOpacity } from 'react-native';
               ),
             }}
           />
+
+          <Tabs.Screen
+            name="Favorites"
+            options={{
+              title: '',
+              tabBarIcon: ({ color, focused }) => (
+                <FontAwesome name="heart" size={24} color={color} />
+              ),
+            }}
+          />
+          
         </Tabs>
+
+        
       </>
     );
   };
