@@ -1,94 +1,126 @@
-import { StatusBar } from 'expo-status-bar';
-import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useFonts, Quicksand_700Bold } from '@expo-google-fonts/quicksand';
+import { Ionicons } from '@expo/vector-icons';
+import { Stack, useRouter } from 'expo-router';
+import React from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function LoginScreen() {
+// Define the type of data
+type History = {
+  id: string;
+  name: string;
+  coordinates: { latitude: number; longitude: number };
+  image: string;
+};
 
-    const [fontsLoaded] = useFonts({
-        Quicksand_700Bold,
-    });
+// Example data
+const historyData: History[] = Array.from({ length: 10 }, (_, index) => ({
+  id: `${index + 1}`,
+  name: `Rancho Santa Mónica ${index + 1}`,
+  coordinates: { latitude: 19.4326 + index * 0.01, longitude: -99.1332 + index * 0.01 },
+  image: 'https://via.placeholder.com/50', // Replace with the real URL
+}));
 
-    if (!fontsLoaded) {
-        return <Text>Loading...</Text>; 
-    }
+const HistoryScreen = () => {
+  const router = useRouter();
 
-    return (
-        <View style={styles.container}>
-            <StatusBar style="light" />
-            <Image style={styles.backgroundImage} source={require('@/assets/images/background.png')} />
-            <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require('@/assets/images/logo.png')} />
-                <Text style={styles.appName}>Cloudy</Text>
-            </View>
-            <View style={styles.content}>
-                <Text style={styles.signInTitle}>Sign In</Text>
-                <Text style={styles.subtitle}>Hi there! Nice to see you again.</Text>
-                <TouchableOpacity style={styles.button} onPress={() => console.log('Login to Azure pressed')}>
-                    <Text style={styles.buttonText}>Login to azure</Text>
-                </TouchableOpacity>
-            </View>
+  const renderHistoryItem = ({ item }: { item: History }) => (
+    <View style={styles.card}>
+      <View style={styles.mapPlaceholder} />
+      <View style={styles.info}>
+        <Text style={styles.name}>{item.name}</Text>
+      </View>
+    </View>
+  );
+  
+  return (
+    <View style={styles.container}>
+      <Stack.Screen options={{ title: '', headerShown: false }} />
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => router.push('/')}
+      >
+        <Ionicons name="arrow-back" size={24} color="#1464F6" />
+      </TouchableOpacity>
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <Ionicons name="time-outline" size={89} color="#444444" />
+          <Text style={[styles.headerText, { color: "#444444" }]}>History</Text>
         </View>
-    );
-}
+      </View>
+      <View style={styles.outerCard}>
+        <FlatList
+          data={historyData}
+          renderItem={renderHistoryItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    backgroundImage: {
-        position: 'absolute',
-        width: '100%',
-        height: '85%',
-    },
-    logoContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 100,
-    },
-    logo: {
-        height: 80,
-        width: 100,
-        marginBottom: 10,
-    },
-    appName: {
-        fontSize: 24,
-        color: '#ffffff',
-        fontFamily: 'Quicksand_700Bold',
-    },
-    content: {
-        flex: 1,
-        justifyContent: 'center',
-        marginTop: -150,
-        paddingHorizontal: 50, 
-    },
-    signInTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#333333',
-        marginBottom: 10,
-        fontFamily: 'Quicksand_700Bold',
-        textAlign: 'left', 
-    },
-    subtitle: {
-        fontSize: 16,
-        color: '#888888',
-        marginBottom: 20,
-        textAlign: 'left', 
-    },
-    button: {
-        backgroundColor: '#3D8AF7',
-        borderRadius: 8,
-        paddingVertical: 12,
-        paddingHorizontal: 85, 
-        alignSelf: 'flex-start', 
-    },
-    buttonText: {
-        fontSize: 16,
-        color: 'white',
-        fontWeight: 'bold',
-        fontFamily: 'Quicksand_700Bold',
-        textAlign: 'center', 
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40, // Adjust this to fit your design
+    left: 20, // Adjust this to fit your design
+    zIndex: 10, // Ensures the button is above other elements
+  },
+  headerContainer: {
+    paddingHorizontal: 10,
+  },
+  header: {
+    alignItems: 'center',
+    marginVertical: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+    paddingBottom: 40,
+    marginBottom: 1,
+    marginTop: 80,
+  },
+  headerText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  list: {
+    paddingHorizontal: 10,
+  },
+  outerCard: {
+    backgroundColor: '#C0C0C0', // Larger card background
+    borderRadius: 15, // Rounded corners for the larger card
+    paddingVertical: 10, // Padding inside the larger card (top and bottom)
+    paddingHorizontal: 5, // Reduces padding on the left and right sides
+    marginVertical: 10, // Spacing between the larger card and others
+    height: 570, // Constrain the height to make it scrollable
+    overflow: 'hidden',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginVertical: 5,
+  },
+  mapPlaceholder: {
+    width: '100%',
+    height: 120,
+    backgroundColor: '#033076',
+  },
+  info: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
+
+export default HistoryScreen;
