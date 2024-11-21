@@ -39,7 +39,7 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 10,
+    borderRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 5,
     width: 230,
@@ -52,26 +52,28 @@ const styles = StyleSheet.create({
     fontSize: 65,
     fontWeight: 'bold',
     color: 'white',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     fontFamily: 'Quicksand_700Bold',
   },
   humidity: {
     fontSize: 35,
-    color: 'white',
+    color: 'rgba(255, 255, 255, 0.6)',
     fontFamily: 'Quicksand_600SemiBold ',
   },
   location: {
-    fontSize: 14,
+    fontSize: 20,
     color: 'white',
-    marginTop: 5,
     textAlign: 'left',
     fontFamily: 'Quicksand_700Bold',
+    paddingHorizontal: 10,
   },
   region: {
-    fontSize: 12,
+    fontSize: 16,
     color: 'white',
     textAlign: 'left',
     fontFamily: 'Quicksand_700Bold',
+    paddingHorizontal: 10,
+    marginTop: 5, 
   },
 });
 

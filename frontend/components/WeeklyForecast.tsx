@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, IconButton } from 'react-native-paper';
+import { Card } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 
 interface WeeklyForecastItem {
   day: string;
@@ -16,11 +17,15 @@ const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
   return (
     <Card style={styles.card}>
       <Text style={styles.title}>Weekly forecast</Text>
+      <View style={styles.divider} />
       {weeklyForecast.map((item, index) => (
-        <View key={index} style={styles.row}>
-          <Text style={styles.day}>{item.day}</Text>
-          <IconButton icon={item.icon} size={20} style={styles.icon} />
-          <Text style={styles.temperature}>{item.temperature}</Text>
+        <View key={index}>
+          <View style={styles.row}>
+            <Text style={styles.day}>{item.day}</Text>
+            <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
+            <Text style={styles.temperature}>{item.temperature}</Text>
+          </View>
+          {index < weeklyForecast.length - 1 && <View style={styles.secondDivider} />}
         </View>
       ))}
     </Card>
@@ -29,35 +34,47 @@ const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
 
 const styles = StyleSheet.create({
   card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     padding: 10,
-    borderRadius: 10,
-    backgroundColor: '#e0f7fa',
-    elevation: 4,
+    borderRadius: 15,
+    marginVertical: 5,
+    height: '58%',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Quicksand_700Bold',
     color: '#ffffff',
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 10,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 5,
+    paddingVertical: 10, 
+    paddingHorizontal: 25, 
   },
   day: {
     fontSize: 16,
     color: '#333',
     flex: 1,
+    fontFamily: 'Quicksand_700Bold',
   },
   icon: {
-    marginHorizontal: 10,
+    marginHorizontal: 20,
   },
   temperature: {
     fontSize: 16,
     color: '#333',
+    fontFamily: 'Quicksand_700Bold',
+  },
+  divider: {
+    borderBottomColor: '#cccc',
+    borderBottomWidth: 3,
+  },
+  secondDivider: {
+    borderBottomColor: '#cccc',
+    borderBottomWidth: 1,
   },
 });
 
