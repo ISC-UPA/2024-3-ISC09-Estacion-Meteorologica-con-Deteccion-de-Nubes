@@ -10,6 +10,6 @@ export const WeatheReading = list({
     humidity: float({ validation: { isRequired: true } }),
     api: checkbox({ defaultValue: false }),
     reading_date: timestamp({ defaultValue: { kind: 'now' } }),
-    user_id: relationship({ ref: 'User', many: true }),
+    device_id: relationship({ ref: 'Device', many: true }),
   },
 });
