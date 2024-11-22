@@ -12,7 +12,7 @@ import { Device } from './schema/Device';
 export default config({
     db: {
         provider: 'sqlite',
-        url: envconfig.DATABASE_URL || `file:./db/vivehub.db`,
+        url: envconfig.DATABASE_URL || `file:./db/cloudyDB.db`,
       },
       server: {
         cors: {
