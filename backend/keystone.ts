@@ -6,9 +6,8 @@ import { User } from './schema/User';
 import { PhotoSky } from './schema/PhotoSky';
 import { WeatheReading } from './schema/WeatheReading';
 import { AnalysisPhoto } from './schema/AnalysisPhoto';
-import { authentication } from './schema/Authentication';
 import { APIPredicion } from './schema/APIPredicion';
-import { azureADIntegration } from './schema/AzureADIntegration';
+import { Device } from './schema/Device';
 
 export default config({
     db: {
@@ -30,11 +29,10 @@ export default config({
       },
   lists: {
     User,
+    Device,
     PhotoSky,
     WeatheReading,
     AnalysisPhoto,
     APIPredicion,
-    authentication,
-    azureADIntegration
   }, 
 });

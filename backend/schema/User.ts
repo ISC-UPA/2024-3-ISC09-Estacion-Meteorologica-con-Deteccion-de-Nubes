@@ -12,5 +12,6 @@ export const User = list({
     premiun_sucription: checkbox({ defaultValue: true }),
     creation_date: timestamp({ defaultValue: { kind: 'now' } }),
     end_suscription_date: timestamp(),
+    device_id: relationship({ ref: 'Device', many: true }) ,
   },
 });

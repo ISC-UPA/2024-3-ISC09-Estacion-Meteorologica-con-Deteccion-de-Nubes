@@ -5,7 +5,7 @@ import { allowAll } from '@keystone-6/core/access';
 export const PhotoSky = list({
   access: allowAll,
   fields: {
-    user_id: relationship({ ref: 'User', many: true }) ,
+    device_id: relationship({ ref: 'Device', many: true }) ,
     url_photo: text({ ui: { displayMode: 'textarea' }, validation: { isRequired: true } }),
     latitude: float({ validation: { isRequired: true } }),
     longitude: float({ validation: { isRequired: true } }),
