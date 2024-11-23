@@ -30,26 +30,19 @@ export default function CustomDrawerContent(props: SideMenuProps) {
     }
   }, [props.visible]);
 
-  const renderDrawerItem = (label: string, iconName: string, navigateTo: string, isSettings: boolean = false) => (
+  const renderDrawerItem = (label: string, iconName: string, navigateTo: string) => (
     <TouchableOpacity
       style={styles.drawerItem}
       onPress={() => {
-        if (!isSettings) {
-          props.navigation.navigate(navigateTo);
-          props.onClose();
-        }
+        props.navigation.navigate(navigateTo);
+        props.onClose();
       }}
     >
       <View style={styles.itemLeft}>
-        {!isSettings && (
-          <>
-            <Ionicons name={iconName} size={22} color="#888" />
-            <Text style={styles.itemLabel}>{label}</Text>
-          </>
-        )}
+        <Ionicons name={iconName} size={22} color="#888" />
+        <Text style={styles.itemLabel}>{label}</Text>
       </View>
-      {!isSettings && <Ionicons name="chevron-forward-outline" size={22} color="#888" style={styles.itemRight} />}
-      {isSettings && <Ionicons name={iconName} size={35} color="#888" style={styles.settingsIcon} />}
+      <Ionicons name="chevron-forward-outline" size={22} color="#888" style={styles.itemRight} />
     </TouchableOpacity>
   );
 
@@ -88,9 +81,18 @@ export default function CustomDrawerContent(props: SideMenuProps) {
               <View style={{ marginBottom: 60 }}>
                 {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremium')}
               </View>
-              {renderDrawerItem('Settings', 'settings-outline', 'drawer/SettingsScreen', true)}
-            </View>
 
+              {/* Reemplazamos el renderDrawerItem por un ícono directo para Settings */}
+              <TouchableOpacity
+                style={[styles.drawerItem, { justifyContent: 'flex-start', paddingHorizontal: 20 }]}
+                onPress={() => {
+                  navigation.navigate('drawer/SeattingsScreen');
+                  props.onClose();
+                }}
+              >
+                <Ionicons name="settings-outline" size={35} color="#888" style={styles.settingsIcon} />
+              </TouchableOpacity>
+            </View>
           </DrawerContentScrollView>
         </Animated.View>
       </TouchableOpacity>
