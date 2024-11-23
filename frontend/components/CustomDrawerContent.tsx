@@ -1,8 +1,8 @@
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 interface SideMenuProps {
   visible: boolean;
@@ -12,75 +12,37 @@ interface SideMenuProps {
 
 export default function CustomDrawerContent(props: SideMenuProps) {
   const slideAnim = useRef(new Animated.Value(-300)).current; 
-  const overlayAnim = useRef(new Animated.Value(0)).current; // Separate animation for the overlay
   const navigation = useNavigation();
-
-  // Function to handle the closing animation
-  const handleClose = useCallback(() => {
-    // First animate the slide out of the drawer
-    Animated.timing(slideAnim, {
-      toValue: -300, // Move to the left (off-screen)
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      // After sliding out, close the modal
-      props.onClose();
-    });
-
-    // Optionally fade the overlay (opacity stays constant while the slide animation runs)
-    Animated.timing(overlayAnim, {
-      toValue: 0, // Fade out the overlay
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [slideAnim, overlayAnim, props]);
 
   useEffect(() => {
     if (props.visible) {
-      // Slide the drawer in
       Animated.timing(slideAnim, {
-        toValue: 0, // Slide in the drawer
+        toValue: 0, 
         duration: 300,
         useNativeDriver: true,
       }).start();
-
-      // Fade in the overlay when the drawer becomes visible
-      Animated.timing(overlayAnim, {
-        toValue: 0.5, // Set overlay opacity to 50%
-        duration: 200,
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: -300, 
+        duration: 300,
         useNativeDriver: true,
       }).start();
-    } else {
-      handleClose(); // Close the drawer if not visible
     }
-  }, [props.visible, handleClose]);
+  }, [props.visible]);
 
-  const renderDrawerItem = (label: string, iconName: string, navigateTo: string, isSettings: boolean = false) => (
+  const renderDrawerItem = (label: string, iconName: string, navigateTo: string) => (
     <TouchableOpacity
       style={styles.drawerItem}
       onPress={() => {
-        if (navigateTo === 'drawer/HistoryScreen') {
-          // Disable the header when navigating to HistoryScreen
-          props.navigation.navigate(navigateTo);
-          props.navigation.setOptions({
-            headerShown: false,  // Disable the header for this screen
-          });
-        } else {
-          props.navigation.navigate(navigateTo);
-        }
-        handleClose(); // Close the drawer after navigating
+        props.navigation.navigate(navigateTo);
+        props.onClose();
       }}
     >
       <View style={styles.itemLeft}>
-        {!isSettings && (
-          <>
-            <Ionicons name={iconName} size={22} color="#888" />
-            <Text style={styles.itemLabel}>{label}</Text>
-          </>
-        )}
+        <Ionicons name={iconName} size={22} color="#888" />
+        <Text style={styles.itemLabel}>{label}</Text>
       </View>
-      {!isSettings && <Ionicons name="chevron-forward-outline" size={22} color="#888" style={styles.itemRight} />}
-      {isSettings && <Ionicons name={iconName} size={35} color="#888" style={styles.settingsIcon} />}
+      <Ionicons name="chevron-forward-outline" size={22} color="#888" style={styles.itemRight} />
     </TouchableOpacity>
   );
 
@@ -89,17 +51,13 @@ export default function CustomDrawerContent(props: SideMenuProps) {
       visible={props.visible}
       transparent={true}
       animationType="none" 
-      onRequestClose={handleClose}
+      onRequestClose={props.onClose}
     >
-      <TouchableOpacity 
-        style={styles.overlay} 
-        onPress={handleClose} 
-        activeOpacity={1} // Disable any touch feedback to avoid weird fading
-      >
+      <TouchableOpacity style={styles.overlay} onPress={props.onClose}>
         <Animated.View
-          style={[styles.modalContainer, { transform: [{ translateX: slideAnim }] }]} >
+          style={[styles.modalContainer, { transform: [{ translateX: slideAnim }] }]}>
           <DrawerContentScrollView contentContainerStyle={styles.container}>
-            <TouchableOpacity style={styles.closeIcon} onPress={handleClose}>
+            <TouchableOpacity style={styles.closeIcon} onPress={props.onClose}>
               <MaterialCommunityIcons name="menu-open" size={35} color="blue" />
             </TouchableOpacity>
             
@@ -116,15 +74,25 @@ export default function CustomDrawerContent(props: SideMenuProps) {
               {renderDrawerItem('Weather', 'cloud-outline', 'Wheater')}
               {renderDrawerItem('History', 'time-outline', 'drawer/HistoryScreen')}
               {renderDrawerItem('My locations', 'location-outline', 'drawer/MyLocationsScreen')}
+              {renderDrawerItem('Favorites', 'heart-outline', 'drawer/FavoritesScreen')}
             </View>
             <View style={{ flex: 1 }} />
             <View style={styles.bottomItems}>
               <View style={{ marginBottom: 60 }}>
-                {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremiumScreen')}
+                {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremium')}
               </View>
-              {renderDrawerItem('Settings', 'settings-outline', 'drawer/SettingsScreen', true)}
-            </View>
 
+              {/* Reemplazamos el renderDrawerItem por un ícono directo para Settings */}
+              <TouchableOpacity
+                style={[styles.drawerItem, { justifyContent: 'flex-start', paddingHorizontal: 20 }]}
+                onPress={() => {
+                  navigation.navigate('drawer/SeattingsScreen');
+                  props.onClose();
+                }}
+              >
+                <Ionicons name="settings-outline" size={35} color="#888" style={styles.settingsIcon} />
+              </TouchableOpacity>
+            </View>
           </DrawerContentScrollView>
         </Animated.View>
       </TouchableOpacity>
@@ -138,7 +106,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Ensure constant opacity
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
     position: 'absolute',
