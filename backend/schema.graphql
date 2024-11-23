@@ -10,6 +10,8 @@ type User {
   premiun_sucription: Boolean
   creation_date: DateTime
   end_suscription_date: DateTime
+  device_id(where: DeviceWhereInput! = {}, orderBy: [DeviceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DeviceWhereUniqueInput): [Device!]
+  device_idCount(where: DeviceWhereInput! = {}): Int
 }
 
 type PasswordState {
@@ -34,6 +36,7 @@ input UserWhereInput {
   premiun_sucription: BooleanFilter
   creation_date: DateTimeNullableFilter
   end_suscription_date: DateTimeNullableFilter
+  device_id: DeviceManyRelationFilter
 }
 
 input IDFilter {
@@ -91,6 +94,12 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
+input DeviceManyRelationFilter {
+  every: DeviceWhereInput
+  some: DeviceWhereInput
+  none: DeviceWhereInput
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -114,6 +123,14 @@ input UserUpdateInput {
   premiun_sucription: Boolean
   creation_date: DateTime
   end_suscription_date: DateTime
+  device_id: DeviceRelateToManyForUpdateInput
+}
+
+input DeviceRelateToManyForUpdateInput {
+  disconnect: [DeviceWhereUniqueInput!]
+  set: [DeviceWhereUniqueInput!]
+  create: [DeviceCreateInput!]
+  connect: [DeviceWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -129,17 +146,64 @@ input UserCreateInput {
   premiun_sucription: Boolean
   creation_date: DateTime
   end_suscription_date: DateTime
+  device_id: DeviceRelateToManyForCreateInput
+}
+
+input DeviceRelateToManyForCreateInput {
+  create: [DeviceCreateInput!]
+  connect: [DeviceWhereUniqueInput!]
+}
+
+type Device {
+  id: ID!
+  name: String
+  creation_date: DateTime
+}
+
+input DeviceWhereUniqueInput {
+  id: ID
+}
+
+input DeviceWhereInput {
+  AND: [DeviceWhereInput!]
+  OR: [DeviceWhereInput!]
+  NOT: [DeviceWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  creation_date: DateTimeNullableFilter
+}
+
+input DeviceOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  creation_date: OrderDirection
+}
+
+input DeviceUpdateInput {
+  name: String
+  creation_date: DateTime
+}
+
+input DeviceUpdateArgs {
+  where: DeviceWhereUniqueInput!
+  data: DeviceUpdateInput!
+}
+
+input DeviceCreateInput {
+  name: String
+  creation_date: DateTime
 }
 
 type PhotoSky {
   id: ID!
-  user_id(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
-  user_idCount(where: UserWhereInput! = {}): Int
+  device_id(where: DeviceWhereInput! = {}, orderBy: [DeviceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DeviceWhereUniqueInput): [Device!]
+  device_idCount(where: DeviceWhereInput! = {}): Int
   url_photo: String
   latitude: Float
   longitude: Float
   api: Boolean
   date_photo: DateTime
+  favorite: Boolean
 }
 
 input PhotoSkyWhereUniqueInput {
@@ -151,18 +215,13 @@ input PhotoSkyWhereInput {
   OR: [PhotoSkyWhereInput!]
   NOT: [PhotoSkyWhereInput!]
   id: IDFilter
-  user_id: UserManyRelationFilter
+  device_id: DeviceManyRelationFilter
   url_photo: StringFilter
   latitude: FloatFilter
   longitude: FloatFilter
   api: BooleanFilter
   date_photo: DateTimeNullableFilter
-}
-
-input UserManyRelationFilter {
-  every: UserWhereInput
-  some: UserWhereInput
-  none: UserWhereInput
+  favorite: BooleanFilter
 }
 
 input FloatFilter {
@@ -183,22 +242,17 @@ input PhotoSkyOrderByInput {
   longitude: OrderDirection
   api: OrderDirection
   date_photo: OrderDirection
+  favorite: OrderDirection
 }
 
 input PhotoSkyUpdateInput {
-  user_id: UserRelateToManyForUpdateInput
+  device_id: DeviceRelateToManyForUpdateInput
   url_photo: String
   latitude: Float
   longitude: Float
   api: Boolean
   date_photo: DateTime
-}
-
-input UserRelateToManyForUpdateInput {
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+  favorite: Boolean
 }
 
 input PhotoSkyUpdateArgs {
@@ -207,17 +261,13 @@ input PhotoSkyUpdateArgs {
 }
 
 input PhotoSkyCreateInput {
-  user_id: UserRelateToManyForCreateInput
+  device_id: DeviceRelateToManyForCreateInput
   url_photo: String
   latitude: Float
   longitude: Float
   api: Boolean
   date_photo: DateTime
-}
-
-input UserRelateToManyForCreateInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+  favorite: Boolean
 }
 
 type WeatheReading {
@@ -227,8 +277,8 @@ type WeatheReading {
   humidity: Float
   api: Boolean
   reading_date: DateTime
-  user_id(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
-  user_idCount(where: UserWhereInput! = {}): Int
+  device_id(where: DeviceWhereInput! = {}, orderBy: [DeviceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DeviceWhereUniqueInput): [Device!]
+  device_idCount(where: DeviceWhereInput! = {}): Int
 }
 
 input WeatheReadingWhereUniqueInput {
@@ -245,7 +295,7 @@ input WeatheReadingWhereInput {
   humidity: FloatFilter
   api: BooleanFilter
   reading_date: DateTimeNullableFilter
-  user_id: UserManyRelationFilter
+  device_id: DeviceManyRelationFilter
 }
 
 input FloatNullableFilter {
@@ -274,7 +324,7 @@ input WeatheReadingUpdateInput {
   humidity: Float
   api: Boolean
   reading_date: DateTime
-  user_id: UserRelateToManyForUpdateInput
+  device_id: DeviceRelateToManyForUpdateInput
 }
 
 input WeatheReadingUpdateArgs {
@@ -288,7 +338,7 @@ input WeatheReadingCreateInput {
   humidity: Float
   api: Boolean
   reading_date: DateTime
-  user_id: UserRelateToManyForCreateInput
+  device_id: DeviceRelateToManyForCreateInput
 }
 
 type AnalysisPhoto {
@@ -390,147 +440,6 @@ input APIPredicionCreateInput {
   prediction_per_hour: String
 }
 
-type authentication {
-  id: ID!
-  tokenId: String
-  associatedUser: User
-  expirationDate: DateTime
-  authenticationType: String
-  adAuthenticationToken: String
-  refreshToken: String
-}
-
-input authenticationWhereUniqueInput {
-  id: ID
-  tokenId: String
-}
-
-input authenticationWhereInput {
-  AND: [authenticationWhereInput!]
-  OR: [authenticationWhereInput!]
-  NOT: [authenticationWhereInput!]
-  id: IDFilter
-  tokenId: StringFilter
-  associatedUser: UserWhereInput
-  expirationDate: DateTimeNullableFilter
-  authenticationType: StringNullableFilter
-  adAuthenticationToken: StringFilter
-  refreshToken: StringFilter
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: StringNullableFilter
-}
-
-input authenticationOrderByInput {
-  id: OrderDirection
-  tokenId: OrderDirection
-  expirationDate: OrderDirection
-  authenticationType: OrderDirection
-  adAuthenticationToken: OrderDirection
-  refreshToken: OrderDirection
-}
-
-input authenticationUpdateInput {
-  tokenId: String
-  associatedUser: UserRelateToOneForUpdateInput
-  expirationDate: DateTime
-  authenticationType: String
-  adAuthenticationToken: String
-  refreshToken: String
-}
-
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
-input authenticationUpdateArgs {
-  where: authenticationWhereUniqueInput!
-  data: authenticationUpdateInput!
-}
-
-input authenticationCreateInput {
-  tokenId: String
-  associatedUser: UserRelateToOneForCreateInput
-  expirationDate: DateTime
-  authenticationType: String
-  adAuthenticationToken: String
-  refreshToken: String
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-type azureADIntegration {
-  id: ID!
-  adUserId: String
-  adTenantId: String
-  roleMapping: String
-  accessTokenValidity: Boolean
-  loginHistory: String
-}
-
-input azureADIntegrationWhereUniqueInput {
-  id: ID
-  adUserId: String
-}
-
-input azureADIntegrationWhereInput {
-  AND: [azureADIntegrationWhereInput!]
-  OR: [azureADIntegrationWhereInput!]
-  NOT: [azureADIntegrationWhereInput!]
-  id: IDFilter
-  adUserId: StringFilter
-  adTenantId: StringFilter
-  roleMapping: StringFilter
-  accessTokenValidity: BooleanFilter
-  loginHistory: StringFilter
-}
-
-input azureADIntegrationOrderByInput {
-  id: OrderDirection
-  adUserId: OrderDirection
-  adTenantId: OrderDirection
-  roleMapping: OrderDirection
-  accessTokenValidity: OrderDirection
-  loginHistory: OrderDirection
-}
-
-input azureADIntegrationUpdateInput {
-  adUserId: String
-  adTenantId: String
-  roleMapping: String
-  accessTokenValidity: Boolean
-  loginHistory: String
-}
-
-input azureADIntegrationUpdateArgs {
-  where: azureADIntegrationWhereUniqueInput!
-  data: azureADIntegrationUpdateInput!
-}
-
-input azureADIntegrationCreateInput {
-  adUserId: String
-  adTenantId: String
-  roleMapping: String
-  accessTokenValidity: Boolean
-  loginHistory: String
-}
-
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -543,6 +452,12 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createDevice(data: DeviceCreateInput!): Device
+  createDevices(data: [DeviceCreateInput!]!): [Device]
+  updateDevice(where: DeviceWhereUniqueInput!, data: DeviceUpdateInput!): Device
+  updateDevices(data: [DeviceUpdateArgs!]!): [Device]
+  deleteDevice(where: DeviceWhereUniqueInput!): Device
+  deleteDevices(where: [DeviceWhereUniqueInput!]!): [Device]
   createPhotoSky(data: PhotoSkyCreateInput!): PhotoSky
   createPhotoSkies(data: [PhotoSkyCreateInput!]!): [PhotoSky]
   updatePhotoSky(where: PhotoSkyWhereUniqueInput!, data: PhotoSkyUpdateInput!): PhotoSky
@@ -567,24 +482,15 @@ type Mutation {
   updateAPIPredicions(data: [APIPredicionUpdateArgs!]!): [APIPredicion]
   deleteAPIPredicion(where: APIPredicionWhereUniqueInput!): APIPredicion
   deleteAPIPredicions(where: [APIPredicionWhereUniqueInput!]!): [APIPredicion]
-  createauthentication(data: authenticationCreateInput!): authentication
-  createAuthentications(data: [authenticationCreateInput!]!): [authentication]
-  updateauthentication(where: authenticationWhereUniqueInput!, data: authenticationUpdateInput!): authentication
-  updateAuthentications(data: [authenticationUpdateArgs!]!): [authentication]
-  deleteauthentication(where: authenticationWhereUniqueInput!): authentication
-  deleteAuthentications(where: [authenticationWhereUniqueInput!]!): [authentication]
-  createazureADIntegration(data: azureADIntegrationCreateInput!): azureADIntegration
-  createAzureADIntegrations(data: [azureADIntegrationCreateInput!]!): [azureADIntegration]
-  updateazureADIntegration(where: azureADIntegrationWhereUniqueInput!, data: azureADIntegrationUpdateInput!): azureADIntegration
-  updateAzureADIntegrations(data: [azureADIntegrationUpdateArgs!]!): [azureADIntegration]
-  deleteazureADIntegration(where: azureADIntegrationWhereUniqueInput!): azureADIntegration
-  deleteAzureADIntegrations(where: [azureADIntegrationWhereUniqueInput!]!): [azureADIntegration]
 }
 
 type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
+  device(where: DeviceWhereUniqueInput!): Device
+  devices(where: DeviceWhereInput! = {}, orderBy: [DeviceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DeviceWhereUniqueInput): [Device!]
+  devicesCount(where: DeviceWhereInput! = {}): Int
   photoSky(where: PhotoSkyWhereUniqueInput!): PhotoSky
   photoSkies(where: PhotoSkyWhereInput! = {}, orderBy: [PhotoSkyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PhotoSkyWhereUniqueInput): [PhotoSky!]
   photoSkiesCount(where: PhotoSkyWhereInput! = {}): Int
@@ -597,12 +503,6 @@ type Query {
   aPIPredicion(where: APIPredicionWhereUniqueInput!): APIPredicion
   aPIPredicions(where: APIPredicionWhereInput! = {}, orderBy: [APIPredicionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: APIPredicionWhereUniqueInput): [APIPredicion!]
   aPIPredicionsCount(where: APIPredicionWhereInput! = {}): Int
-  authentication(where: authenticationWhereUniqueInput!): authentication
-  authentications(where: authenticationWhereInput! = {}, orderBy: [authenticationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: authenticationWhereUniqueInput): [authentication!]
-  authenticationsCount(where: authenticationWhereInput! = {}): Int
-  azureADIntegration(where: azureADIntegrationWhereUniqueInput!): azureADIntegration
-  azureADIntegrations(where: azureADIntegrationWhereInput! = {}, orderBy: [azureADIntegrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: azureADIntegrationWhereUniqueInput): [azureADIntegration!]
-  azureADIntegrationsCount(where: azureADIntegrationWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 
