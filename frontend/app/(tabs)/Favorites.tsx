@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-// Define el tipo de los datos
+// Define the type of data
 type Favorite = {
   id: string;
   name: string;
@@ -10,25 +10,17 @@ type Favorite = {
   image: string;
 };
 
-// Datos de ejemplo
-const favoritesData: Favorite[] = [
-  {
-    id: '1',
-    name: 'Rancho Santa Mónica',
-    coordinates: { latitude: 19.4326, longitude: -99.1332 },
-    image: 'https://via.placeholder.com/50', // Reemplázalo con la URL real
-  },
-  {
-    id: '2',
-    name: 'Rancho Santa Mónica',
-    coordinates: { latitude: 19.4426, longitude: -99.1532 },
-    image: 'https://via.placeholder.com/50', // Reemplázalo con la URL real
-  },
-];
+// Example data
+const favoritesData: Favorite[] = Array.from({ length: 10 }, (_, index) => ({
+  id: `${index + 1}`,
+  name: `Rancho Santa Mónica ${index + 1}`,
+  coordinates: { latitude: 19.4326 + index * 0.01, longitude: -99.1332 + index * 0.01 },
+  image: 'https://via.placeholder.com/50', // Replace with the real URL
+}));
 
 const Favorites = () => {
   const renderFavoriteItem = ({ item }: { item: Favorite }) => (
-    <View style={styles.card}> {/* text inner card */}
+    <View style={styles.card}> {/* Inner card */}
       <View style={styles.mapPlaceholder} /> {/* Map placeholder */}
       <View style={styles.info}>
         <Text style={styles.name}>{item.name}</Text>
@@ -47,13 +39,14 @@ const Favorites = () => {
           <Text style={[styles.headerText, { color: "#444444" }]}>Favorites</Text>
         </View>
       </View>
-      {/* Outer card encapsulating the whole list */}
-      <View style={styles.outerCard}> 
+      {/* Outer card encapsulating the list */}
+      <View style={styles.outerCard}>
         <FlatList
           data={favoritesData}
           renderItem={renderFavoriteItem}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
         />
       </View>
     </View>
@@ -87,21 +80,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   outerCard: {
-    backgroundColor: '#D6D6D6', // Larger card background
+    backgroundColor: '#C0C0C0', // Larger card background
     borderRadius: 15, // Rounded corners for the larger card
     paddingVertical: 10, // Padding inside the larger card (top and bottom)
+    paddingHorizontal: 5, // Reduces padding on the left and right sides
     marginVertical: 10, // Spacing between the larger card and others
-  },
+    height: 520, // Constrain the height to make it scrollable
+    overflow: 'hidden',
+  },  
   card: {
-    backgroundColor: '#FFFFFF', // Inner card (red)
+    backgroundColor: '#FFFFFF', // Inner card background
     borderRadius: 10,
     overflow: 'hidden',
     marginVertical: 5, // Space between inner cards
   },
   mapPlaceholder: {
     width: '100%',
-    height: 120, // Smaller placeholder for map
-    backgroundColor: '#033076', // Gray placeholder for map
+    height: 120, // Placeholder height
+    backgroundColor: '#033076', // Placeholder color
   },
   info: {
     flexDirection: 'row',
@@ -114,6 +110,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default Favorites;

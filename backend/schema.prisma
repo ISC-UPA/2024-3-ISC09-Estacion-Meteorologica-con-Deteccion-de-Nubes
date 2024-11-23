@@ -12,27 +12,35 @@ generator client {
 }
 
 model User {
-  id                                 String           @id @default(cuid())
-  name                               String           @default("")
-  email                              String           @unique @default("")
-  password                           String
-  phone                              String           @default("")
-  premiun_sucription                 Boolean          @default(true)
-  creation_date                      DateTime?        @default(now())
-  end_suscription_date               DateTime?
-  from_PhotoSky_user_id              PhotoSky[]       @relation("PhotoSky_user_id")
-  from_WeatheReading_user_id         WeatheReading[]  @relation("WeatheReading_user_id")
-  from_authentication_associatedUser authentication[] @relation("authentication_associatedUser")
+  id                   String    @id @default(cuid())
+  name                 String    @default("")
+  email                String    @unique @default("")
+  password             String
+  phone                String    @default("")
+  premiun_sucription   Boolean   @default(true)
+  creation_date        DateTime? @default(now())
+  end_suscription_date DateTime?
+  device_id            Device[]  @relation("User_device_id")
+}
+
+model Device {
+  id                           String          @id @default(cuid())
+  name                         String          @default("")
+  creation_date                DateTime?       @default(now())
+  from_User_device_id          User[]          @relation("User_device_id")
+  from_PhotoSky_device_id      PhotoSky[]      @relation("PhotoSky_device_id")
+  from_WeatheReading_device_id WeatheReading[] @relation("WeatheReading_device_id")
 }
 
 model PhotoSky {
   id                             String          @id @default(cuid())
-  user_id                        User[]          @relation("PhotoSky_user_id")
+  device_id                      Device[]        @relation("PhotoSky_device_id")
   url_photo                      String          @default("")
   latitude                       Float
   longitude                      Float
   api                            Boolean         @default(false)
   date_photo                     DateTime?       @default(now())
+  favorite                       Boolean         @default(false)
   from_AnalysisPhoto_skyphoto_id AnalysisPhoto[] @relation("AnalysisPhoto_skyphoto_id")
   from_APIPredicion_skyphoto_id  APIPredicion[]  @relation("APIPredicion_skyphoto_id")
 }
@@ -44,7 +52,7 @@ model WeatheReading {
   humidity             Float
   api                  Boolean   @default(false)
   reading_date         DateTime? @default(now())
-  user_id              User[]    @relation("WeatheReading_user_id")
+  device_id            Device[]  @relation("WeatheReading_device_id")
 }
 
 model AnalysisPhoto {
@@ -65,26 +73,4 @@ model APIPredicion {
   prediction_per_hour String    @default("")
 
   @@index([skyphoto_idId])
-}
-
-model authentication {
-  id                    String    @id @default(cuid())
-  tokenId               String    @unique @default("")
-  associatedUser        User?     @relation("authentication_associatedUser", fields: [associatedUserId], references: [id])
-  associatedUserId      String?   @map("associatedUser")
-  expirationDate        DateTime?
-  authenticationType    String?
-  adAuthenticationToken String    @default("")
-  refreshToken          String    @default("")
-
-  @@index([associatedUserId])
-}
-
-model azureADIntegration {
-  id                  String  @id @default(cuid())
-  adUserId            String  @unique @default("")
-  adTenantId          String  @default("")
-  roleMapping         String  @default("")
-  accessTokenValidity Boolean @default(false)
-  loginHistory        String  @default("")
 }
