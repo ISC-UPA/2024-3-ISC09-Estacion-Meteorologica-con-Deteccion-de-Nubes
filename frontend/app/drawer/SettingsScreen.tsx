@@ -137,10 +137,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: isDarkMode ? '#444' : '#aaa', // Darker line in light mode
+    borderBottomColor: '#ddd',
     paddingVertical: 10,
   },
-  
   label: {
     fontSize: 20,
   },
