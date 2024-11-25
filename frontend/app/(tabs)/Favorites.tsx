@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
 
 // Define the type of data
 type Favorite = {
@@ -19,28 +20,29 @@ const favoritesData: Favorite[] = Array.from({ length: 10 }, (_, index) => ({
 }));
 
 const Favorites = () => {
+  const { isDarkMode } = useTheme(); // Access global dark mode state
+
   const renderFavoriteItem = ({ item }: { item: Favorite }) => (
-    <View style={styles.card}> {/* Inner card */}
-      <View style={styles.mapPlaceholder} /> {/* Map placeholder */}
+    <View style={[styles.card, { backgroundColor: isDarkMode ? '#333' : '#FFF' }]}> {/* Adjust card background */}
+      <View style={[styles.mapPlaceholder, { backgroundColor: isDarkMode ? '#555' : '#033076' }]} /> {/* Adjust map placeholder color */}
       <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={[styles.name, { color: isDarkMode ? '#FFF' : '#000' }]}>{item.name}</Text> {/* Adjust text color */}
         <TouchableOpacity>
-          <Ionicons name="heart" size={24} color="blue" />
+          <Ionicons name="heart" size={24} color={isDarkMode ? '#FFF' : 'blue'} /> {/* Adjust icon color */}
         </TouchableOpacity>
       </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#222' : '#f0f0f0' }]}> {/* Adjust screen background */}
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="heart" size={89} color="#444444" />
-          <Text style={[styles.headerText, { color: "#444444" }]}>Favorites</Text>
+          <Ionicons name="heart" size={89} color={isDarkMode ? '#FFF' : '#444444'} /> {/* Adjust header icon color */}
+          <Text style={[styles.headerText, { color: isDarkMode ? '#FFF' : '#444444' }]}>Favorites</Text> {/* Adjust header text color */}
         </View>
       </View>
-      {/* Outer card encapsulating the list */}
-      <View style={styles.outerCard}>
+      <View style={[styles.outerCard, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}> {/* Adjust outer card background */}
         <FlatList
           data={favoritesData}
           renderItem={renderFavoriteItem}
@@ -56,7 +58,6 @@ const Favorites = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0', // Background color for the screen
     paddingHorizontal: 20, // Padding for the entire container
   },
   headerContainer: {
@@ -66,11 +67,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20,
     borderBottomWidth: 2, // Adds a line at the bottom
-    borderBottomColor: 'rgba(0, 0, 0, 0.2)', // Gray color with opacity
-    paddingBottom: 40, // Increases space between the line and the text
+    borderBottomColor: '#FFF', // Changed to white
+    paddingBottom: 40,
     marginBottom: 1,
     marginTop: 80,
   },
+  
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -80,16 +82,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   outerCard: {
-    backgroundColor: '#C0C0C0', // Larger card background
     borderRadius: 15, // Rounded corners for the larger card
     paddingVertical: 10, // Padding inside the larger card (top and bottom)
     paddingHorizontal: 5, // Reduces padding on the left and right sides
     marginVertical: 10, // Spacing between the larger card and others
     height: 520, // Constrain the height to make it scrollable
     overflow: 'hidden',
-  },  
+  },
   card: {
-    backgroundColor: '#FFFFFF', // Inner card background
     borderRadius: 10,
     overflow: 'hidden',
     marginVertical: 5, // Space between inner cards
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
   mapPlaceholder: {
     width: '100%',
     height: 120, // Placeholder height
-    backgroundColor: '#033076', // Placeholder color
   },
   info: {
     flexDirection: 'row',

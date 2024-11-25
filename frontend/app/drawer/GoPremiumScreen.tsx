@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
 
 const benefitsData = [
   { feature: "2 APP-LAUNCH ADS", free: true, premium: false },
@@ -13,42 +14,43 @@ const benefitsData = [
 
 const GoPremiumScreen = () => {
   const router = useRouter();
+  const { isDarkMode } = useTheme(); // Get the global dark mode state
 
   const renderBenefitItem = ({ item }: { item: typeof benefitsData[0] }) => (
-    <View style={styles.row}>
-      <Text style={styles.featureText}>{item.feature}</Text>
-      <Text style={styles.checkmark}>
-        {item.free ? <Ionicons name="checkmark" size={20} color="#444444" /> : '—'}
+    <View style={[styles.row, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
+      <Text style={[styles.featureText, { color: isDarkMode ? '#FFF' : '#333' }]}>{item.feature}</Text>
+      <Text style={[styles.checkmark, { color: isDarkMode ? '#FFF' : '#333' }]}>
+        {item.free ? <Ionicons name="checkmark" size={20} color={isDarkMode ? '#FFF' : '#333'} /> : '—'}
       </Text>
-      <Text style={styles.checkmark}>
-        {item.premium ? <Ionicons name="checkmark" size={20} color="#444444" /> : '—'}
+      <Text style={[styles.checkmark, { color: isDarkMode ? '#FFF' : '#333' }]}>
+        {item.premium ? <Ionicons name="checkmark" size={20} color={isDarkMode ? '#FFF' : '#333'} /> : '—'}
       </Text>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#222' : '#f0f0f0' }]}>
       <Stack.Screen options={{ title: '', headerShown: false }} />
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => router.push('/')}
       >
-        <Ionicons name="arrow-back" size={24} color="#1464F6" />
+        <Ionicons name="arrow-back" size={24} color={isDarkMode ? '#3D8AF7' : '#1464F6'} />
       </TouchableOpacity>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="diamond" size={89} color="#444444" />
-          <Text style={[styles.headerText, { color: "#444444" }]}>Go Premium</Text>
+          <Ionicons name="diamond" size={89} color={isDarkMode ? '#fff' : '#444'} />
+          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>Go Premium</Text>
         </View>
       </View>
-      <Text style={styles.introText}>
+      <Text style={[styles.introText, { color: isDarkMode ? '#fff' : '#333' }]}>
         Go premium and enjoy many benefits for a small price:
       </Text>
-      <View style={styles.outerCard}>
-        <View style={styles.tableHeader}>
-          <Text style={styles.headerFeature}>WHAT'S INCLUDED</Text>
-          <Text style={styles.headerOption}>FREE</Text>
-          <Text style={styles.headerOption}>PREMIUM</Text>
+      <View style={[styles.outerCard, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
+        <View style={[styles.tableHeader, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
+          <Text style={[styles.headerFeature, { color: isDarkMode ? '#FFF' : '#333' }]}>WHAT'S INCLUDED</Text>
+          <Text style={[styles.headerOption, { color: isDarkMode ? '#FFF' : '#333' }]}>FREE</Text>
+          <Text style={[styles.headerOption, { color: isDarkMode ? '#FFF' : '#333' }]}>PREMIUM</Text>
         </View>
         <FlatList
           data={benefitsData}
@@ -68,7 +70,6 @@ const GoPremiumScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
   },
   backButton: {
@@ -81,9 +82,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
     textAlign: 'justify',
-    textAlignVertical: 'center',
     marginBottom: 10,
     paddingHorizontal: 15,
   },
@@ -93,19 +92,19 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginVertical: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+    borderBottomWidth: 2, // Adds a line at the bottom
+    borderBottomColor: '#FFF', // Changed to white
     paddingBottom: 40,
     marginBottom: 1,
     marginTop: 80,
   },
+  
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 10,
   },
   outerCard: {
-    backgroundColor: '#C0C0C0',
     borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 5,
@@ -147,12 +146,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     textAlign: 'center',
-    color: '#444444',
   },
   // Style for the Purchase Button
   purchaseButton: {
     backgroundColor: '#3D8AF7',
-    paddingVertical: 15,  // Vertical padding
+    paddingVertical: 15,
     marginHorizontal: 125,
     marginTop: 20,
     borderRadius: 8,

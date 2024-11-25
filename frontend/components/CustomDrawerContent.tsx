@@ -3,6 +3,7 @@ import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
 
 interface SideMenuProps {
   visible: boolean;
@@ -14,6 +15,7 @@ export default function CustomDrawerContent(props: SideMenuProps) {
   const slideAnim = useRef(new Animated.Value(-300)).current; 
   const overlayAnim = useRef(new Animated.Value(0)).current; // Separate animation for the overlay
   const navigation = useNavigation();
+  const { isDarkMode } = useTheme(); // Access global dark mode state
 
   // Function to handle the closing animation
   const handleClose = useCallback(() => {
@@ -57,7 +59,12 @@ export default function CustomDrawerContent(props: SideMenuProps) {
 
   const renderDrawerItem = (label: string, iconName: string, navigateTo: string, isSettings: boolean = false) => (
     <TouchableOpacity
-      style={styles.drawerItem}
+      style={[
+        styles.drawerItem,
+        {
+          backgroundColor: isDarkMode ? '#222' : '#FFF', // Set background color of each item to match the global background
+        },
+      ]}
       onPress={() => {
         if (navigateTo === 'drawer/HistoryScreen') {
           // Disable the header when navigating to HistoryScreen
@@ -74,13 +81,13 @@ export default function CustomDrawerContent(props: SideMenuProps) {
       <View style={styles.itemLeft}>
         {!isSettings && (
           <>
-            <Ionicons name={iconName} size={22} color="#888" />
-            <Text style={styles.itemLabel}>{label}</Text>
+            <Ionicons name={iconName} size={22} color={isDarkMode ? '#FFF' : '#888'} />  {/* Adjust icon color */}
+            <Text style={[styles.itemLabel, { color: isDarkMode ? '#FFF' : '#000' }]}>{label}</Text>  {/* Adjust text color */}
           </>
         )}
       </View>
-      {!isSettings && <Ionicons name="chevron-forward-outline" size={22} color="#888" style={styles.itemRight} />}
-      {isSettings && <Ionicons name={iconName} size={35} color="#888" style={styles.settingsIcon} />}
+      {!isSettings && <Ionicons name="chevron-forward-outline" size={22} color={isDarkMode ? '#FFF' : '#888'} style={styles.itemRight} />}
+      {isSettings && <Ionicons name={iconName} size={35} color={isDarkMode ? '#FFF' : '#888'} style={styles.settingsIcon} />}
     </TouchableOpacity>
   );
 
@@ -97,10 +104,10 @@ export default function CustomDrawerContent(props: SideMenuProps) {
         activeOpacity={1} // Disable any touch feedback to avoid weird fading
       >
         <Animated.View
-          style={[styles.modalContainer, { transform: [{ translateX: slideAnim }] }]} >
+          style={[styles.modalContainer, { transform: [{ translateX: slideAnim }], backgroundColor: isDarkMode ? '#222' : '#FFF' }]} > {/* Adjust modal background color */}
           <DrawerContentScrollView contentContainerStyle={styles.container}>
             <TouchableOpacity style={styles.closeIcon} onPress={handleClose}>
-              <MaterialCommunityIcons name="menu-open" size={35} color="blue" />
+              <MaterialCommunityIcons name="menu-open" size={35} color={isDarkMode ? '#FFF' : 'blue'} /> {/* Adjust close icon color */}
             </TouchableOpacity>
             
             <View style={styles.profileSection}>
@@ -108,12 +115,12 @@ export default function CustomDrawerContent(props: SideMenuProps) {
                 source={require('../assets/images/default-image.jpg')}
                 style={styles.profileImage}
               />
-              <Text style={styles.profileName}>Test Testerson</Text>
-              <Text style={styles.profileEmail}>correo@correo.com</Text>
+              <Text style={[styles.profileName, { color: isDarkMode ? '#FFF' : '#000' }]}>Test Testerson</Text>  {/* Adjust text color */}
+              <Text style={[styles.profileEmail, { color: isDarkMode ? '#AAA' : '#888' }]}>correo@correo.com</Text>  {/* Adjust text color */}
             </View>
 
             <View style={styles.menuItems}>
-              {renderDrawerItem('Weather', 'cloud-outline', 'Wheater')}
+              {renderDrawerItem('Weather', 'cloud-outline', 'index')}
               {renderDrawerItem('History', 'time-outline', 'drawer/HistoryScreen')}
               {renderDrawerItem('My locations', 'location-outline', 'drawer/MyLocationsScreen')}
             </View>
@@ -146,7 +153,6 @@ const styles = StyleSheet.create({
     left: 0,
     width: 300,
     height: '100%',
-    backgroundColor: 'white',
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
   },
@@ -168,7 +174,6 @@ const styles = StyleSheet.create({
   },
   profileEmail: {
     fontSize: 14,
-    color: '#888',
   },
   menuItems: {
     paddingVertical: 10,
@@ -193,7 +198,6 @@ const styles = StyleSheet.create({
   itemLabel: {
     marginLeft: 15,
     fontSize: 16,
-    color: '#000',
   },
   itemRight: {
     marginLeft: 'auto',

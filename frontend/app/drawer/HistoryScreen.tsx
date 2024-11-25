@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
 
 // Define the type of data
 type History = {
@@ -21,32 +22,39 @@ const historyData: History[] = Array.from({ length: 10 }, (_, index) => ({
 
 const HistoryScreen = () => {
   const router = useRouter();
+  const { isDarkMode } = useTheme(); // Get the global dark mode state
 
   const renderHistoryItem = ({ item }: { item: History }) => (
-    <View style={styles.card}>
-      <View style={styles.mapPlaceholder} />
+    <View style={[styles.card, { backgroundColor: isDarkMode ? '#333' : '#FFF' }]}>
+      <View style={[styles.mapPlaceholder, { backgroundColor: isDarkMode ? '#555' : '#033076' }]} />
       <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={[styles.name, { color: isDarkMode ? '#FFF' : '#333' }]}>{item.name}</Text>
       </View>
     </View>
   );
-  
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#222' : '#f0f0f0' }]}>
       <Stack.Screen options={{ title: '', headerShown: false }} />
+
+      {/* Back Button */}
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => router.push('/')}
       >
-        <Ionicons name="arrow-back" size={24} color="#1464F6" />
+        <Ionicons name="arrow-back" size={24} color={isDarkMode ? '#3D8AF7' : '#1464F6'} />
       </TouchableOpacity>
+
+      {/* Header Section */}
       <View style={styles.headerContainer}>
         <View style={styles.header}>
-          <Ionicons name="time-outline" size={89} color="#444444" />
-          <Text style={[styles.headerText, { color: "#444444" }]}>History</Text>
+          <Ionicons name="time-outline" size={89} color={isDarkMode ? '#fff' : '#444'} />
+          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>History</Text>
         </View>
       </View>
-      <View style={styles.outerCard}>
+
+      {/* History List */}
+      <View style={[styles.outerCard, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
         <FlatList
           data={historyData}
           renderItem={renderHistoryItem}
@@ -62,14 +70,13 @@ const HistoryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
   },
   backButton: {
     position: 'absolute',
-    top: 40, // Adjust this to fit your design
-    left: 20, // Adjust this to fit your design
-    zIndex: 10, // Ensures the button is above other elements
+    top: 40,
+    left: 20,
+    zIndex: 10,
   },
   headerContainer: {
     paddingHorizontal: 10,
@@ -77,12 +84,13 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginVertical: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+    borderBottomWidth: 2, // Adds a line at the bottom
+    borderBottomColor: '#FFF', // Changed to white
     paddingBottom: 40,
     marginBottom: 1,
     marginTop: 80,
   },
+  
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -92,16 +100,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   outerCard: {
-    backgroundColor: '#C0C0C0', // Larger card background
-    borderRadius: 15, // Rounded corners for the larger card
-    paddingVertical: 10, // Padding inside the larger card (top and bottom)
-    paddingHorizontal: 5, // Reduces padding on the left and right sides
-    marginVertical: 10, // Spacing between the larger card and others
-    height: 570, // Constrain the height to make it scrollable
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    marginVertical: 10,
+    height: 570,
     overflow: 'hidden',
   },
   card: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     overflow: 'hidden',
     marginVertical: 5,
@@ -109,7 +115,6 @@ const styles = StyleSheet.create({
   mapPlaceholder: {
     width: '100%',
     height: 120,
-    backgroundColor: '#033076',
   },
   info: {
     flexDirection: 'row',
