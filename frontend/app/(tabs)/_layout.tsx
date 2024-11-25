@@ -30,15 +30,6 @@ import { TouchableOpacity } from 'react-native';
           }}
         >
           <Tabs.Screen
-            name="index"
-            options={{
-              title: '',
-              tabBarIcon: ({ color, focused }) => (
-                <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
-              ),
-            }}
-          />
-          <Tabs.Screen
             name="AppDrawer"
             options={{
               title: '',
@@ -53,7 +44,15 @@ import { TouchableOpacity } from 'react-native';
               ),
             }}
           />
-
+          <Tabs.Screen
+            name="index"
+            options={{
+              title: '',
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
+              ),
+            }}
+          />
           <Tabs.Screen
             name="Favorites"
             options={{
