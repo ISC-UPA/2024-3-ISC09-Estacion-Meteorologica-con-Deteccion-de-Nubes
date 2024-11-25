@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import TemperatureAndHumidityCard from '../../components/TemperatureAndHumidityCard';
 import AtmosphericPressureCard from '../../components/AtmosphericPressureCard';
+import { format, getHours } from 'date-fns';
 import HourlyForecast from '../../components/HourlyForecast';
 import WeeklyForecast from '../../components/WeeklyForecast';
 
@@ -24,10 +25,22 @@ const weeklyForecastData = [
   { day: 'Sunday', icon: "cloudy-sharp", temperature: "20°" },
 ];
 
+const getBackgroundImage = (): any => {
+  const currentHour = getHours(new Date());
+
+  if (currentHour >= 6 && currentHour < 18) {
+    return require('../../assets/images/sunny.jpg'); 
+  } else {
+    return require('../../assets/images/night.jpg'); 
+  }
+};
+
 export default function WeatherScreen() {
+  const backgroundImage = getBackgroundImage();
+
   return (
     <ImageBackground
-      source={require('../../assets/images/sunny.jpg')}
+      source={backgroundImage}
       style={styles.background}
     >
       <View style={styles.container}>
@@ -46,7 +59,6 @@ export default function WeatherScreen() {
           <WeeklyForecast weeklyForecast={weeklyForecastData} />
       </View>
     </ImageBackground>
-
   );
   
 }

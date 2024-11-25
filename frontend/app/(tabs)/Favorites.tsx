@@ -10,18 +10,25 @@ type Favorite = {
   image: string;
 };
 
-// Example data
-const favoritesData: Favorite[] = Array.from({ length: 10 }, (_, index) => ({
-  id: `${index + 1}`,
-  name: `Rancho Santa Mónica ${index + 1}`,
-  coordinates: { latitude: 19.4326 + index * 0.01, longitude: -99.1332 + index * 0.01 },
-  image: 'https://via.placeholder.com/50', // Replace with the real URL
-}));
+const favoritesData: Favorite[] = [
+  {
+    id: '1',
+    name: 'Rancho Santa Mónica',
+    coordinates: { latitude: 19.4326, longitude: -99.1332 },
+    image: 'https://via.placeholder.com/50', 
+  },
+  {
+    id: '2',
+    name: 'Rancho Santa Mónica',
+    coordinates: { latitude: 19.4426, longitude: -99.1532 },
+    image: 'https://via.placeholder.com/50', 
+  },
+];
 
 const Favorites = () => {
   const renderFavoriteItem = ({ item }: { item: Favorite }) => (
-    <View style={styles.card}> {/* Inner card */}
-      <View style={styles.mapPlaceholder} /> {/* Map placeholder */}
+    <View style={styles.card}>
+      <View style={styles.mapPlaceholder} />
       <View style={styles.info}>
         <Text style={styles.name}>{item.name}</Text>
         <TouchableOpacity>

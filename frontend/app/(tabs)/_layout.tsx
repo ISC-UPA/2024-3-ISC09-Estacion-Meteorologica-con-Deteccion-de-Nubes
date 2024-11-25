@@ -59,7 +59,7 @@ import { TouchableOpacity } from 'react-native';
             options={{
               title: '',
               tabBarIcon: ({ color, focused }) => (
-                <FontAwesome name="heart" size={22} color={color} />
+                <FontAwesome name={focused ? 'heart' : 'heart-o'} size={22} color={color} />
               ),
             }}
           />
