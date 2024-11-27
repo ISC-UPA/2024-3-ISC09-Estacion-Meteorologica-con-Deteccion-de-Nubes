@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
-const Favorites = () => {
+const CloudScreen = () => {
   const data = [
     {
       id: '1',
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Favorites;
+export default CloudScreen;
