@@ -39,6 +39,15 @@ import { TouchableOpacity } from 'react-native';
             }}
           />
           <Tabs.Screen
+            name="Favorites"
+            options={{
+              title: '',
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons name={focused ? 'cloudy' : 'cloudy-outline'} color={color} size={30} />
+              ),
+            }}
+          />
+          <Tabs.Screen
             name="AppDrawer"
             options={{
               title: '',
@@ -50,16 +59,6 @@ import { TouchableOpacity } from 'react-native';
                   {...props}
                   onPress={() => handleOpenDrawer()}
                 />
-              ),
-            }}
-          />
-
-          <Tabs.Screen
-            name="Favorites"
-            options={{
-              title: '',
-              tabBarIcon: ({ color, focused }) => (
-                <FontAwesome name={focused ? 'heart' : 'heart-o'} size={22} color={color} />
               ),
             }}
           />
