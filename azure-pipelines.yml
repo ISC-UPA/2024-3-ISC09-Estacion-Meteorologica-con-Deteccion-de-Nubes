@@ -67,4 +67,4 @@ stages:
         azureSubscription: 'Azure for Students(1)(499e186f-6f01-4da4-aa17-f2fcbd575485)'
         appName: 'Cloudy'
         containers: 'cloudycontainerregistry.azurecr.io/cloudy:latest'
-        appSettings: '-Port 8081'
+        appSettings: '-Port 8081 -RequestTimeout 6000'
