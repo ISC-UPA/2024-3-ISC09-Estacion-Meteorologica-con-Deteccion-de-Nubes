@@ -178,8 +178,6 @@ export default function WeatherScreen() {
       const predictionPerDayJSON = JSON.parse(predictionPerDayString);
       // console.log(predictionPerDayJSON);
       setWeeklyForescastData(transformWeeklyForecastData(predictionPerDayJSON));
-      
-      
       const predictionPerHourString = predictionData.aPIPredicions[0].prediction_per_hour;
       const predictionPerHourJSON = JSON.parse(predictionPerHourString);
       // console.log(predictionPerHourJSON);

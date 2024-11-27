@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   pressure: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'white',
     marginLeft: 5,
     fontFamily: 'Quicksand_700Bold',
