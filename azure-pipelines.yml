@@ -14,8 +14,8 @@ stages:
 - stage: Build
   displayName: Build and Push Docker Image
   jobs:
-  - job: Build
-    displayName: Build
+  - job: Build_api
+    displayName: Build api
     steps:
     - task: Docker@2
       inputs:
@@ -30,13 +30,28 @@ stages:
         repository: 'cloudy-api'
         command: 'push'
         tags: 'latest'
+  - job: Build
+    displayName: Build api
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'CloudyContainerRegistry'
+        command: 'build'
+        Dockerfile: '**/frontend/Dockerfile'
+        arguments: '-t cloudycontainerregistry.azurecr.io/cloudy:latest'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'CloudyContainerRegistry'
+        repository: 'cloudy'
+        command: 'push'
+        tags: 'latest'
 
 - stage: Deploy
   displayName: Deploy to Azure Web
   dependsOn: Build
   jobs:
-  - job: Deploy
-    displayName: Deploy
+  - job: Deploy_api
+    displayName: Deploy api
     steps:    
     - task: AzureWebAppContainer@1
       inputs:
@@ -44,3 +59,12 @@ stages:
         appName: 'Cloudy-api'
         containers: 'cloudycontainerregistry.azurecr.io/cloudy-api:latest'
         appSettings: '-Port 3000'
+  - job: Deploy
+    displayName: Deploy
+    steps:    
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Azure for Students(1)(499e186f-6f01-4da4-aa17-f2fcbd575485)'
+        appName: 'Cloudy'
+        containers: 'cloudycontainerregistry.azurecr.io/cloudy:latest'
+        appSettings: '-Port 8081 -RequestTimeout 6000'
