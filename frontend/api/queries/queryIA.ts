@@ -7,21 +7,13 @@ export interface IA{
 }
 
 export const GET_IA = gql`
-query Query($where: AnalysisPhotoWhereInput!) {
-  analysisPhotos(where: $where) {
+query Query {
+  analysisPhotos {
     probability_rain
     sky_type
-  }
-}
-`
-/*
-{
-  "where": {
-    "skyphoto_id": {
-      "id": {
-        "equals": null
-      }
+    skyphoto_id {
+      url_photo
     }
   }
 }
-  */
+`

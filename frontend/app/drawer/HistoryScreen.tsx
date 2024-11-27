@@ -1,32 +1,35 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
-import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_ALLPHOTO } from '@/api/queries/querryAllPhoto';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
-// Define the type of data
-type History = {
-  id: string;
-  name: string;
-  coordinates: { latitude: number; longitude: number };
-  image: string;
+type Photo = {
+    id: string;
+    date_photo: string;
+    latitude: number;
+    longitude: number;
+    url_photo: string;
 };
-
-// Example data
-const historyData: History[] = Array.from({ length: 10 }, (_, index) => ({
-  id: `${index + 1}`,
-  name: `Rancho Santa Mónica ${index + 1}`,
-  coordinates: { latitude: 19.4326 + index * 0.01, longitude: -99.1332 + index * 0.01 },
-  image: 'https://via.placeholder.com/50', // Replace with the real URL
-}));
-
 const HistoryScreen = () => {
   const router = useRouter();
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const { data } = useQuery(GET_ALLPHOTO);
 
-  const renderHistoryItem = ({ item }: { item: History }) => (
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      setPhotos(data.photoSkies);
+    }
+  }, [data]);
+  
+  const renderHistoryItem = ({ item }: { item: Photo }) => (
     <View style={styles.card}>
-      <View style={styles.mapPlaceholder} />
+      <Image source={{ uri: item.url_photo }} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
+        <Text style={styles.date}>Date: {new Date(item.date_photo).toLocaleString()}</Text>
+        <Text style={styles.coordinates}>Coordinates: {item.latitude}, {item.longitude}</Text>
       </View>
     </View>
   );
@@ -48,7 +51,7 @@ const HistoryScreen = () => {
       </View>
       <View style={styles.outerCard}>
         <FlatList
-          data={historyData}
+          data={photos}
           renderItem={renderHistoryItem}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
@@ -60,67 +63,75 @@ const HistoryScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-    paddingHorizontal: 20,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 40, // Adjust this to fit your design
-    left: 20, // Adjust this to fit your design
-    zIndex: 10, // Ensures the button is above other elements
-  },
-  headerContainer: {
-    paddingHorizontal: 10,
-  },
-  header: {
-    alignItems: 'center',
-    marginVertical: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: 'rgba(0, 0, 0, 0.2)',
-    paddingBottom: 40,
-    marginBottom: 1,
-    marginTop: 80,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-  list: {
-    paddingHorizontal: 10,
-  },
-  outerCard: {
-    backgroundColor: '#C0C0C0', // Larger card background
-    borderRadius: 15, // Rounded corners for the larger card
-    paddingVertical: 10, // Padding inside the larger card (top and bottom)
-    paddingHorizontal: 5, // Reduces padding on the left and right sides
-    marginVertical: 10, // Spacing between the larger card and others
-    height: 570, // Constrain the height to make it scrollable
-    overflow: 'hidden',
-  },
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginVertical: 5,
-  },
-  mapPlaceholder: {
-    width: '100%',
-    height: 120,
-    backgroundColor: '#033076',
-  },
-  info: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#f0f0f0',
+        paddingHorizontal: 20,
+      },
+      backButton: {
+        position: 'absolute',
+        top: 40,
+        left: 20,
+        zIndex: 10,
+      },
+      headerContainer: {
+        paddingHorizontal: 10,
+      },
+      header: {
+        alignItems: 'center',
+        marginVertical: 20,
+        borderBottomWidth: 2,
+        borderBottomColor: 'rgba(0, 0, 0, 0.2)',
+        paddingBottom: 40,
+        marginBottom: 1,
+        marginTop: 80,
+      },
+      headerText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 10,
+      },
+      list: {
+        paddingHorizontal: 10,
+      },
+      outerCard: {
+        backgroundColor: '#C0C0C0',
+        borderRadius: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 5,
+        marginVertical: 10,
+        height: 570,
+        overflow: 'hidden',
+      },
+      card: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginVertical: 5,
+      },
+      image: {
+        width: '100%',
+        height: 120,
+      },
+      info: {
+        padding: 10,
+      },
+      name: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      date: {
+        fontSize: 14,
+        color: '#666',
+      },
+      coordinates: {
+        fontSize: 14,
+        color: '#666',
+      },
+      prediction: {
+        fontSize: 14,
+        color: '#666',
+      },
 });
 
 export default HistoryScreen;
