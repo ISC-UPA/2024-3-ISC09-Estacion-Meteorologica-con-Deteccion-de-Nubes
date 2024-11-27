@@ -1,61 +1,51 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-// Define the type of data
-type Favorite = {
-  id: string;
-  name: string;
-  coordinates: { latitude: number; longitude: number };
-  image: string;
-};
-
-const favoritesData: Favorite[] = [
-  {
-    id: '1',
-    name: 'Rancho Santa Mónica',
-    coordinates: { latitude: 19.4326, longitude: -99.1332 },
-    image: 'https://via.placeholder.com/50', 
-  },
-  {
-    id: '2',
-    name: 'Rancho Santa Mónica',
-    coordinates: { latitude: 19.4426, longitude: -99.1532 },
-    image: 'https://via.placeholder.com/50', 
-  },
-];
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
 const Favorites = () => {
-  const renderFavoriteItem = ({ item }: { item: Favorite }) => (
-    <View style={styles.card}>
-      <View style={styles.mapPlaceholder} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{item.name}</Text>
-        <TouchableOpacity>
-          <Ionicons name="heart" size={24} color="blue" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const data = [
+    {
+      id: '1',
+      imageUrl: 'https://example.com/image1.jpg',
+      cloudType: 'Nublado',
+      probability: 80,
+    },
+    {
+      id: '2',
+      imageUrl: 'https://example.com/image2.jpg',
+      cloudType: 'Despejado',
+      probability: 10,
+    },
+    {
+      id: '3',
+      imageUrl: 'https://example.com/image3.jpg',
+      cloudType: 'Lluvia ligera',
+      probability: 50,
+    },
+  ];
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.header}>
-          <Ionicons name="heart" size={89} color="#444444" />
-          <Text style={[styles.headerText, { color: "#444444" }]}>Favorites</Text>
-        </View>
-      </View>
-      {/* Outer card encapsulating the list */}
-      <View style={styles.outerCard}>
-        <FlatList
-          data={favoritesData}
-          renderItem={renderFavoriteItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.list}
-          showsVerticalScrollIndicator={false} // Hide vertical scroll indicator
-        />
-      </View>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.cardContainer}>
+            <View style={styles.placeholder}>
+              <Image
+                source={{ uri: item.imageUrl }}
+                style={styles.image}
+              />
+            </View>
+            <View style={styles.card}>
+              <View style={styles.row}>
+                <Text style={styles.cloudType}>{item.cloudType}</Text>
+                <Text style={styles.probability}>{item.probability}%</Text>
+              </View>
+            </View>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -63,58 +53,50 @@ const Favorites = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0', // Background color for the screen
-    paddingHorizontal: 20, // Padding for the entire container
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 20, 
+    paddingVertical: 50,
   },
-  headerContainer: {
-    paddingHorizontal: 10, // Shortens the line on the sides
-  },
-  header: {
-    alignItems: 'center',
-    marginVertical: 20,
-    borderBottomWidth: 2, // Adds a line at the bottom
-    borderBottomColor: 'rgba(0, 0, 0, 0.2)', // Gray color with opacity
-    paddingBottom: 40, // Increases space between the line and the text
-    marginBottom: 1,
-    marginTop: 80,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 10, // Adds space between the icon and the text
-  },
-  list: {
-    paddingHorizontal: 10,
-  },
-  outerCard: {
-    backgroundColor: '#C0C0C0', // Larger card background
-    borderRadius: 15, // Rounded corners for the larger card
-    paddingVertical: 10, // Padding inside the larger card (top and bottom)
-    paddingHorizontal: 5, // Reduces padding on the left and right sides
-    marginVertical: 10, // Spacing between the larger card and others
-    height: 520, // Constrain the height to make it scrollable
-    overflow: 'hidden',
-  },  
-  card: {
-    backgroundColor: '#FFFFFF', // Inner card background
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginVertical: 5, // Space between inner cards
-  },
-  mapPlaceholder: {
+  cardContainer: {
     width: '100%',
-    height: 120, // Placeholder height
-    backgroundColor: '#033076', // Placeholder color
+    marginBottom: 20,
   },
-  info: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  placeholder: {
+    width: '100%',
+    height: 250, 
+    backgroundColor: '#033076',
+    borderRadius: 20,
+    overflow: 'hidden', 
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover', 
+  },
+  card: {
+    width: '100%',
+    height: 60,
+    borderRadius: 20,
+    backgroundColor: 'rgba(3, 48, 118, 0.5)', 
+    marginTop: 5,
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
   },
-  name: {
+  row: {
+    flexDirection: 'row', 
+    justifyContent: 'space-around',  
+    width: '100%', 
+  },
+  cloudType: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white', 
+  },
+  probability: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white', 
   },
 });
 
