@@ -3,19 +3,20 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { useFonts, Quicksand_700Bold } from '@expo-google-fonts/quicksand';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useTranslation } from 'react-i18next';
 
 interface HourlyForecastProps {
   forecast: { time: string; icon: string; temperature: number | string }[];
 }
 
 const HourlyForecast: React.FC<HourlyForecastProps> = ({ forecast }) => {
+  const { t } = useTranslation();
   const [fontsLoaded] = useFonts({
     Quicksand_700Bold,
   });
 
   if (!fontsLoaded) {
-    return <Text>Loading...</Text>; 
+    return <Text>Loading...</Text>;
   }
 
   return (
@@ -25,11 +26,12 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ forecast }) => {
           data={forecast}
           horizontal
           showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.time}
           renderItem={({ item }) => (
             <View style={styles.forecastItem}>
-              <Text style={styles.time}>{item.time}</Text>
+              <Text style={styles.time}>
+                {item.time.toLowerCase() === "now" ? t('now') : item.time}
+              </Text>
               <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
               <Text style={styles.temperature}>{item.temperature}°</Text>
             </View>
@@ -52,17 +54,17 @@ const styles = StyleSheet.create({
   forecastItem: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 18, 
+    marginHorizontal: 18,
     marginBottom: 0,
   },
   time: {
     fontSize: 14,
     color: 'white',
     fontFamily: 'Quicksand_700Bold',
-    marginBottom: 0, 
+    marginBottom: 0,
   },
   icon: {
-    marginBottom: 5, 
+    marginBottom: 5,
   },
   temperature: {
     fontSize: 16,

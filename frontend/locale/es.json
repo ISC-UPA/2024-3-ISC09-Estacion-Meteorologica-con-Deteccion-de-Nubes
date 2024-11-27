@@ -1,0 +1,48 @@
+{
+  "translation": {
+    "settings": "Configuración",
+    "darkMode": "Modo Claro/Oscuro",
+    "language": "Idioma",
+    "signOutTitle": "Cerrar sesión",
+    "signOutMessage": "¿Estás seguro de que deseas cerrar sesión?",
+    "cancel": "Cancelar",
+    "signOut": "Cerrar sesión",
+    "atmosphericPressure": "Presión atmosférica",
+    "temperatureAndHumidity": "Temperatura y Humedad",
+    "locationName": "Cerro del Muerto",
+    "regionName": "Aguascalientes",
+    "now": "Ahora",
+    "weeklyForecast": "Pronóstico Semanal",
+    "days": {
+      "today": "Hoy",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado",
+      "sunday": "Domingo"
+    },
+    "favoritesTitle": "Favoritos",
+    "favoriteItemName": "{{name}}",
+    "weather": "Clima",
+    "history": "Historial",
+    "myLocations": "Mis ubicaciones",
+    "goPremium": "Hazte Premium",
+    "goPremiumTitle": "Hazte Premium",
+    "goPremiumIntro": "Hazte premium y disfruta de muchos beneficios por un pequeño precio:",
+    "whatsIncluded": "QUÉ ESTÁ INCLUIDO",
+    "free": "GRATIS",
+    "premium": "PREMIUM",
+    "purchase": "Comprar",
+    "benefits": {
+      "appLaunchAds": "2 ANUNCIOS DE LANZAMIENTO DE APP",
+      "adAfterPhoto": "ANUNCIO DESPUÉS DE LA FOTO",
+      "predictWeather": "PREDECIR EL CLIMA Y PRONÓSTICO DE LLUVIA",
+      "photoHourly": "FOTOGRAFÍA TOMADA CADA HORA",
+      "hourlyForecast": "PRONÓSTICO HORARIO PARA LOS PRÓXIMOS DÍAS"
+    },
+    "historyTitle": "Historial",
+    "historyItemName": "{{name}}"
+  }
+}

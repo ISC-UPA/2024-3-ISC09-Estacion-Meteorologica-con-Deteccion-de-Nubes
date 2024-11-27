@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 interface WeeklyForecastItem {
   day: string;
-  icon: string; 
+  icon: string;
   temperature: string | number;
 }
 
@@ -14,14 +15,16 @@ interface WeeklyForecastProps {
 }
 
 const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
+  const { t } = useTranslation();
+
   return (
     <Card style={styles.card}>
-      <Text style={styles.title}>Weekly forecast</Text>
+      <Text style={styles.title}>{t('weeklyForecast')}</Text>
       <View style={styles.divider} />
       {weeklyForecast.map((item, index) => (
         <View key={index}>
           <View style={styles.row}>
-            <Text style={styles.day}>{item.day}</Text>
+            <Text style={styles.day}>{t(`days.${item.day.toLowerCase()}`)}</Text>
             <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
             <Text style={styles.temperature}>{item.temperature}</Text>
           </View>
@@ -51,8 +54,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10, 
-    paddingHorizontal: 25, 
+    paddingVertical: 10,
+    paddingHorizontal: 25,
   },
   day: {
     fontSize: 16,

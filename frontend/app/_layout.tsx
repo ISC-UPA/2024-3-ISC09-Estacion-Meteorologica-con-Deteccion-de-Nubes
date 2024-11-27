@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import client from '@/api/apolloClient';
 import { ThemeProvider } from '@/contexts/ThemeContext'; // Correct import path
+import '@/i18n'
 
 export default function RootLayout() {
   return (

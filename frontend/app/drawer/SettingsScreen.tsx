@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
-import { useTheme } from '@/contexts/ThemeContext'; // Adjust path as needed
+import { useTheme } from '@/contexts/ThemeContext'; // Ajustar ruta según sea necesario
+import { useTranslation } from "react-i18next";
 
 const SettingsScreen = () => {
   const router = useRouter();
-  const { isDarkMode, toggleDarkMode } = useTheme(); // Access dark mode state from context
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Estado de modo oscuro del contexto
+  const { t, i18n: { changeLanguage, language } } = useTranslation();
+  const [currentLanguage, setCurrentLanguage] = useState(language);
 
-  // Handlers
+  const handleChangeLanguage = () => {
+    const newLanguage = currentLanguage === "en" ? "es" : "en";
+    setCurrentLanguage(newLanguage);
+    changeLanguage(newLanguage);
+  };
+
   const handleSignOut = () => {
     Alert.alert(
-      "Sign Out",
-      "Are you sure you want to sign out?",
+      t('signOutTitle'),
+      t('signOutMessage'),
       [
-        { text: "Cancel", style: "cancel" },
-        { text: "Sign Out", onPress: () => console.log("Signed out!") },
+        { text: t('cancel'), style: "cancel" },
+        { text: t('signOut'), onPress: () => console.log("Signed out!") },
       ],
       { cancelable: true }
     );
@@ -24,83 +32,73 @@ const SettingsScreen = () => {
   const settingsOptions = [
     {
       id: '1',
-      label: 'Light/Dark Mode',
-      component: (
-        <TouchableOpacity onPress={toggleDarkMode} style={styles.darkModeButton}>
-          <Ionicons
-            name={isDarkMode ? 'sunny' : 'moon'} // Swap the icons based on dark mode
-            size={24}
-            color={isDarkMode ? '#FFFFFF' : '#000000'} // White for sun in dark mode, black for moon in light mode
-          />
-        </TouchableOpacity>
+      label: t('darkMode'),
+      onPress: toggleDarkMode,
+      icon: (
+        <Ionicons
+          name={isDarkMode ? 'sunny' : 'moon'}
+          size={24}
+          color={isDarkMode ? '#FFFFFF' : '#000000'}
+        />
       ),
     },
     {
       id: '2',
-      label: 'Language',
-      component: (
-        <TouchableOpacity style={styles.languageButton}>
-          <Ionicons
-            name="language-outline" // Language icon
-            size={24}
-            color={isDarkMode ? '#FFFFFF' : '#000000'} // Change color based on dark mode
-          />
-        </TouchableOpacity>
+      label: t('language'),
+      onPress: handleChangeLanguage,
+      icon: (
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: isDarkMode ? '#FFFFFF' : '#000000',
+          }}
+        >
+          {currentLanguage.toUpperCase()}
+        </Text>
       ),
     },
     {
       id: '3',
-      label: 'Sign Out',
-      component: (
-        <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
-          <Ionicons
-            name="log-out-outline" // Sign Out icon
-            size={24}
-            color={isDarkMode ? '#FFFFFF' : '#000000'} // White in dark mode, black in light mode
-          />
-        </TouchableOpacity>
+      label: t('signOut'),
+      onPress: handleSignOut,
+      icon: (
+        <Ionicons
+          name="log-out-outline"
+          size={24}
+          color={isDarkMode ? '#FFFFFF' : '#000000'}
+        />
       ),
     },
   ];
 
-  const renderSettingsOption = ({ item }: { item: any }) => (
-    <TouchableOpacity
-      style={styles.settingsItem}
-      onPress={item.onPress ? item.onPress : undefined}
-      activeOpacity={item.onPress ? 0.7 : 1}
-    >
-      <Text style={[styles.label, { color: isDarkMode ? '#fff' : '#333' }]}>{item.label}</Text>
-      {item.component}
-    </TouchableOpacity>
-  );
-
   return (
     <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#f0f0f0' }]}>
-      {/* Disable Header */}
       <Stack.Screen options={{ title: '', headerShown: false }} />
 
-      {/* Back Button */}
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => router.push('/')}
-      >
-        <Ionicons 
-          name="arrow-back" 
-          size={24} 
-          color={isDarkMode ? '#3D8AF7' : '#1464F6'} // Change color based on dark mode
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/')}>
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          color={isDarkMode ? '#3D8AF7' : '#1464F6'}
         />
       </TouchableOpacity>
 
-      {/* Header Section */}
       <View style={styles.headerContainer}>
         <Ionicons name="settings-outline" size={89} color={isDarkMode ? '#fff' : '#444'} />
-        <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>Settings</Text>
+        <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>{t('settings')}</Text>
       </View>
 
-      {/* Settings List */}
       <View style={styles.settingsList}>
         {settingsOptions.map((option) => (
-          <View key={option.id}>{renderSettingsOption({ item: option })}</View>
+          <TouchableOpacity
+            key={option.id}
+            style={styles.settingsItem}
+            onPress={option.onPress}
+          >
+            <Text style={[styles.label, { color: isDarkMode ? '#fff' : '#333' }]}>{option.label}</Text>
+            {option.icon}
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -138,35 +136,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
-    paddingVertical: 10,
+    paddingVertical: 15,
   },
   label: {
     fontSize: 20,
-  },
-  placeholderText: {
-    fontSize: 16,
-    color: '#888',
-  },
-  darkModeButton: {
-    padding: 5,
-    borderRadius: 50,
-    backgroundColor: 'transparent', // Remove the background to avoid the white circle
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  signOutButton: {
-    padding: 5,
-    borderRadius: 50,
-    backgroundColor: 'transparent', // Remove the background for a clean look
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  languageButton: {
-    padding: 5,
-    borderRadius: 50,
-    backgroundColor: 'transparent', // Remove the background for a clean look
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

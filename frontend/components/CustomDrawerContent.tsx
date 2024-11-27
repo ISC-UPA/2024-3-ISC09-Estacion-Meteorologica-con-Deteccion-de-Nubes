@@ -4,32 +4,31 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 interface SideMenuProps {
   visible: boolean;
   onClose: () => void;
-  navigation: any; 
+  navigation: any;
 }
 
 export default function CustomDrawerContent(props: SideMenuProps) {
-  const slideAnim = useRef(new Animated.Value(-300)).current; 
+  const slideAnim = useRef(new Animated.Value(-300)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current; // Separate animation for the overlay
   const navigation = useNavigation();
   const { isDarkMode } = useTheme(); // Access global dark mode state
+  const { t } = useTranslation(); // Access translation function
 
   // Function to handle the closing animation
   const handleClose = useCallback(() => {
-    // First animate the slide out of the drawer
     Animated.timing(slideAnim, {
       toValue: -300, // Move to the left (off-screen)
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
-      // After sliding out, close the modal
       props.onClose();
     });
 
-    // Optionally fade the overlay (opacity stays constant while the slide animation runs)
     Animated.timing(overlayAnim, {
       toValue: 0, // Fade out the overlay
       duration: 200,
@@ -39,50 +38,40 @@ export default function CustomDrawerContent(props: SideMenuProps) {
 
   useEffect(() => {
     if (props.visible) {
-      // Slide the drawer in
       Animated.timing(slideAnim, {
         toValue: 0, // Slide in the drawer
         duration: 300,
         useNativeDriver: true,
       }).start();
 
-      // Fade in the overlay when the drawer becomes visible
       Animated.timing(overlayAnim, {
         toValue: 0.5, // Set overlay opacity to 50%
         duration: 200,
         useNativeDriver: true,
       }).start();
     } else {
-      handleClose(); // Close the drawer if not visible
+      handleClose();
     }
   }, [props.visible, handleClose]);
 
-  const renderDrawerItem = (label: string, iconName: string, navigateTo: string, isSettings: boolean = false) => (
+  const renderDrawerItem = (translationKey: string, iconName: string, navigateTo: string, isSettings: boolean = false) => (
     <TouchableOpacity
       style={[
         styles.drawerItem,
         {
-          backgroundColor: isDarkMode ? '#222' : '#FFF', // Set background color of each item to match the global background
+          backgroundColor: isDarkMode ? '#222' : '#FFF',
         },
       ]}
       onPress={() => {
-        if (navigateTo === 'drawer/HistoryScreen') {
-          // Disable the header when navigating to HistoryScreen
-          props.navigation.navigate(navigateTo);
-          props.navigation.setOptions({
-            headerShown: false,  // Disable the header for this screen
-          });
-        } else {
-          props.navigation.navigate(navigateTo);
-        }
-        handleClose(); // Close the drawer after navigating
+        props.navigation.navigate(navigateTo);
+        handleClose();
       }}
     >
       <View style={styles.itemLeft}>
         {!isSettings && (
           <>
-            <Ionicons name={iconName} size={22} color={isDarkMode ? '#FFF' : '#888'} />  {/* Adjust icon color */}
-            <Text style={[styles.itemLabel, { color: isDarkMode ? '#FFF' : '#000' }]}>{label}</Text>  {/* Adjust text color */}
+            <Ionicons name={iconName} size={22} color={isDarkMode ? '#FFF' : '#888'} />
+            <Text style={[styles.itemLabel, { color: isDarkMode ? '#FFF' : '#000' }]}>{t(translationKey)}</Text>
           </>
         )}
       </View>
@@ -92,52 +81,46 @@ export default function CustomDrawerContent(props: SideMenuProps) {
   );
 
   return (
-    <Modal
-      visible={props.visible}
-      transparent={true}
-      animationType="none" 
-      onRequestClose={handleClose}
-    >
-      <TouchableOpacity 
-        style={styles.overlay} 
-        onPress={handleClose} 
-        activeOpacity={1} // Disable any touch feedback to avoid weird fading
-      >
+    <Modal visible={props.visible} transparent={true} animationType="none" onRequestClose={handleClose}>
+      <TouchableOpacity style={styles.overlay} onPress={handleClose} activeOpacity={1}>
         <Animated.View
-          style={[styles.modalContainer, { transform: [{ translateX: slideAnim }], backgroundColor: isDarkMode ? '#222' : '#FFF' }]} > {/* Adjust modal background color */}
+          style={[
+            styles.modalContainer,
+            { transform: [{ translateX: slideAnim }], backgroundColor: isDarkMode ? '#222' : '#FFF' },
+          ]}
+        >
           <DrawerContentScrollView contentContainerStyle={styles.container}>
             <TouchableOpacity style={styles.closeIcon} onPress={handleClose}>
-              <MaterialCommunityIcons name="menu-open" size={35} color={isDarkMode ? '#FFF' : 'blue'} /> {/* Adjust close icon color */}
+              <MaterialCommunityIcons name="menu-open" size={35} color={isDarkMode ? '#FFF' : 'blue'} />
             </TouchableOpacity>
-            
+
             <View style={styles.profileSection}>
-              <Image
-                source={require('../assets/images/default-image.jpg')}
-                style={styles.profileImage}
-              />
-              <Text style={[styles.profileName, { color: isDarkMode ? '#FFF' : '#000' }]}>Test Testerson</Text>  {/* Adjust text color */}
-              <Text style={[styles.profileEmail, { color: isDarkMode ? '#AAA' : '#888' }]}>correo@correo.com</Text>  {/* Adjust text color */}
+              <Image source={require('../assets/images/default-image.jpg')} style={styles.profileImage} />
+              <Text style={[styles.profileName, { color: isDarkMode ? '#FFF' : '#000' }]}>Test Testerson</Text>
+              <Text style={[styles.profileEmail, { color: isDarkMode ? '#AAA' : '#888' }]}>correo@correo.com</Text>
             </View>
 
             <View style={styles.menuItems}>
-              {renderDrawerItem('Weather', 'cloud-outline', 'index')}
-              {renderDrawerItem('History', 'time-outline', 'drawer/HistoryScreen')}
-              {renderDrawerItem('My locations', 'location-outline', 'drawer/MyLocationsScreen')}
+              {renderDrawerItem('weather', 'cloud-outline', 'index')}
+              {renderDrawerItem('history', 'time-outline', 'drawer/HistoryScreen')}
+              {renderDrawerItem('myLocations', 'location-outline', 'drawer/MyLocationsScreen')}
             </View>
             <View style={{ flex: 1 }} />
             <View style={styles.bottomItems}>
               <View style={{ marginBottom: 60 }}>
-                {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremiumScreen')}
+                {renderDrawerItem('goPremium', 'diamond-outline', 'drawer/GoPremiumScreen')}
               </View>
-              {renderDrawerItem('Settings', 'settings-outline', 'drawer/SettingsScreen', true)}
+              {renderDrawerItem('settings', 'settings-outline', 'drawer/SettingsScreen', true)}
             </View>
-
           </DrawerContentScrollView>
         </Animated.View>
       </TouchableOpacity>
     </Modal>
   );
 }
+
+// ... [Styles remain unchanged]
+
 
 const styles = StyleSheet.create({
   container: {

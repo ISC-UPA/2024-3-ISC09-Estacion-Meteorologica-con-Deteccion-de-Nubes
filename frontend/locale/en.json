@@ -1,0 +1,46 @@
+{
+  "translation": {
+    "settings": "Settings",
+    "darkMode": "Light/Dark Mode",
+    "language": "Language",
+    "signOutTitle": "Sign Out",
+    "signOutMessage": "Are you sure you want to sign out?",
+    "cancel": "Cancel",
+    "signOut": "Sign Out",
+    "locationName": "Cerro del Muerto",
+    "regionName": "Aguascalientes",
+    "now": "Now",
+    "weeklyForecast": "Weekly Forecast",
+    "days": {
+      "today": "Today",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "favoritesTitle": "Favorites",
+    "favoriteItemName": "{{name}}",
+    "weather": "Weather",
+    "history": "History",
+    "myLocations": "My Locations",
+    "goPremium": "Go Premium",
+    "goPremiumTitle": "Go Premium",
+    "goPremiumIntro": "Go premium and enjoy many benefits for a small price:",
+    "whatsIncluded": "WHAT'S INCLUDED",
+    "free": "FREE",
+    "premium": "PREMIUM",
+    "purchase": "Purchase",
+    "benefits": {
+      "appLaunchAds": "2 APP-LAUNCH ADS",
+      "adAfterPhoto": "AD AFTER PHOTO",
+      "predictWeather": "PREDICT WEATHER AND RAIN FORECAST",
+      "photoHourly": "PHOTOGRAPH TAKEN EVERY HOUR",
+      "hourlyForecast": "HOURLY FORECAST FOR THE NEXT FEW DAYS"
+    },
+    "historyTitle": "History",
+    "historyItemName": "{{name}}"
+  }
+}

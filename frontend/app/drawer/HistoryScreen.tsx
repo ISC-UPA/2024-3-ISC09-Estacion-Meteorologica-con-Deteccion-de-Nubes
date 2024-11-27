@@ -3,6 +3,7 @@ import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 // Define the type of data
 type History = {
@@ -23,12 +24,15 @@ const historyData: History[] = Array.from({ length: 10 }, (_, index) => ({
 const HistoryScreen = () => {
   const router = useRouter();
   const { isDarkMode } = useTheme(); // Get the global dark mode state
+  const { t } = useTranslation(); // Access translation function
 
   const renderHistoryItem = ({ item }: { item: History }) => (
     <View style={[styles.card, { backgroundColor: isDarkMode ? '#333' : '#FFF' }]}>
       <View style={[styles.mapPlaceholder, { backgroundColor: isDarkMode ? '#555' : '#033076' }]} />
       <View style={styles.info}>
-        <Text style={[styles.name, { color: isDarkMode ? '#FFF' : '#333' }]}>{item.name}</Text>
+        <Text style={[styles.name, { color: isDarkMode ? '#FFF' : '#333' }]}>
+          {t('historyItemName', { name: item.name })}
+        </Text>
       </View>
     </View>
   );
@@ -49,7 +53,9 @@ const HistoryScreen = () => {
       <View style={styles.headerContainer}>
         <View style={styles.header}>
           <Ionicons name="time-outline" size={89} color={isDarkMode ? '#fff' : '#444'} />
-          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>History</Text>
+          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>
+            {t('historyTitle')}
+          </Text>
         </View>
       </View>
 
@@ -84,13 +90,12 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginVertical: 20,
-    borderBottomWidth: 2, // Adds a line at the bottom
-    borderBottomColor: '#FFF', // Changed to white
+    borderBottomWidth: 2,
+    borderBottomColor: '#FFF',
     paddingBottom: 40,
     marginBottom: 1,
     marginTop: 80,
   },
-  
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',

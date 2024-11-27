@@ -2,23 +2,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext'; // Import useTheme
+import { useTheme } from '@/contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const benefitsData = [
-  { feature: "2 APP-LAUNCH ADS", free: true, premium: false },
-  { feature: "AD AFTER PHOTO", free: true, premium: false },
-  { feature: "PREDICT WEATHER AND RAIN FORECAST", free: true, premium: true },
-  { feature: "PHOTOGRAPH TAKEN EVERY HOUR", free: true, premium: true },
-  { feature: "HOURLY FORECAST FOR THE NEXT FEW DAYS", free: true, premium: true },
+  { feature: "appLaunchAds", free: true, premium: false },
+  { feature: "adAfterPhoto", free: true, premium: false },
+  { feature: "predictWeather", free: true, premium: true },
+  { feature: "photoHourly", free: true, premium: true },
+  { feature: "hourlyForecast", free: true, premium: true },
 ];
 
 const GoPremiumScreen = () => {
   const router = useRouter();
-  const { isDarkMode } = useTheme(); // Get the global dark mode state
+  const { isDarkMode } = useTheme();
+  const { t } = useTranslation();
 
   const renderBenefitItem = ({ item }: { item: typeof benefitsData[0] }) => (
     <View style={[styles.row, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
-      <Text style={[styles.featureText, { color: isDarkMode ? '#FFF' : '#333' }]}>{item.feature}</Text>
+      <Text style={[styles.featureText, { color: isDarkMode ? '#FFF' : '#333' }]}>
+        {t(`benefits.${item.feature}`)}
+      </Text>
       <Text style={[styles.checkmark, { color: isDarkMode ? '#FFF' : '#333' }]}>
         {item.free ? <Ionicons name="checkmark" size={20} color={isDarkMode ? '#FFF' : '#333'} /> : '—'}
       </Text>
@@ -31,26 +35,27 @@ const GoPremiumScreen = () => {
   return (
     <View style={[styles.container, { backgroundColor: isDarkMode ? '#222' : '#f0f0f0' }]}>
       <Stack.Screen options={{ title: '', headerShown: false }} />
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => router.push('/')}
-      >
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/')}>
         <Ionicons name="arrow-back" size={24} color={isDarkMode ? '#3D8AF7' : '#1464F6'} />
       </TouchableOpacity>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
           <Ionicons name="diamond" size={89} color={isDarkMode ? '#fff' : '#444'} />
-          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>Go Premium</Text>
+          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>
+            {t('goPremiumTitle')}
+          </Text>
         </View>
       </View>
       <Text style={[styles.introText, { color: isDarkMode ? '#fff' : '#333' }]}>
-        Go premium and enjoy many benefits for a small price:
+        {t('goPremiumIntro')}
       </Text>
       <View style={[styles.outerCard, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
         <View style={[styles.tableHeader, { backgroundColor: isDarkMode ? '#444' : '#C0C0C0' }]}>
-          <Text style={[styles.headerFeature, { color: isDarkMode ? '#FFF' : '#333' }]}>WHAT'S INCLUDED</Text>
-          <Text style={[styles.headerOption, { color: isDarkMode ? '#FFF' : '#333' }]}>FREE</Text>
-          <Text style={[styles.headerOption, { color: isDarkMode ? '#FFF' : '#333' }]}>PREMIUM</Text>
+          <Text style={[styles.headerFeature, { color: isDarkMode ? '#FFF' : '#333' }]}>
+            {t('whatsIncluded')}
+          </Text>
+          <Text style={[styles.headerOption, { color: isDarkMode ? '#FFF' : '#333' }]}>{t('free')}</Text>
+          <Text style={[styles.headerOption, { color: isDarkMode ? '#FFF' : '#333' }]}>{t('premium')}</Text>
         </View>
         <FlatList
           data={benefitsData}
@@ -59,9 +64,8 @@ const GoPremiumScreen = () => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-      {/* Purchase Button */}
       <TouchableOpacity style={styles.purchaseButton}>
-        <Text style={styles.purchaseButtonText}>Purchase</Text>
+        <Text style={styles.purchaseButtonText}>{t('purchase')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 5,
     marginVertical: 10,
-    height: 330,
+    height: 350,
     overflow: 'hidden',
     marginTop: 10,
   },
