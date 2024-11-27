@@ -18,16 +18,22 @@ const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
     <Card style={styles.card}>
       <Text style={styles.title}>Weekly forecast</Text>
       <View style={styles.divider} />
-      {weeklyForecast.map((item, index) => (
-        <View key={index}>
-          <View style={styles.row}>
-            <Text style={styles.day}>{item.day}</Text>
-            <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
-            <Text style={styles.temperature}>{item.temperature}</Text>
-          </View>
-          {index < weeklyForecast.length - 1 && <View style={styles.secondDivider} />}
-        </View>
-      ))}
+      {
+         weeklyForecast && weeklyForecast.length > 0 ? (
+            weeklyForecast.map((item, index) => (
+              <View key={index}>
+                <View style={styles.row}>
+                  <Text style={styles.day}>{item.day}</Text>
+                  <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
+                  <Text style={styles.temperature}>{item.temperature}</Text>
+                </View>
+                {index < weeklyForecast.length - 1 && <View style={styles.secondDivider} />}
+              </View>
+            ))
+          ) : (
+            <Text>No weekly forecast data available</Text> // Aquí puedes mostrar un mensaje si no hay datos
+          )
+      }
     </Card>
   );
 };

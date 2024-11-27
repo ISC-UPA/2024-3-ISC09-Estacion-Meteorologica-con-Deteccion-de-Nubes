@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SideMenuProps {
   visible: boolean;
@@ -13,8 +14,22 @@ interface SideMenuProps {
 export default function CustomDrawerContent(props: SideMenuProps) {
   const slideAnim = useRef(new Animated.Value(-300)).current; 
   const navigation = useNavigation();
+  const [userInfo, setUserInfo] = useState({ name: '', email: '' });
 
   useEffect(() => {
+    const fetchUserInfo = async () => {
+        try {
+          const storedUserInfo = await AsyncStorage.getItem('userInfo');
+          if (storedUserInfo) {
+            setUserInfo(JSON.parse(storedUserInfo));
+          }
+        } catch (error) {
+          console.error('Failed to retrieve user info:', error);
+        }
+    };
+
+    fetchUserInfo();
+    
     if (props.visible) {
       Animated.timing(slideAnim, {
         toValue: 0, 
@@ -66,9 +81,10 @@ export default function CustomDrawerContent(props: SideMenuProps) {
                 source={require('../assets/images/default-image.jpg')}
                 style={styles.profileImage}
               />
-              <Text style={styles.profileName}>Test Testerson</Text>
-              <Text style={styles.profileEmail}>correo@correo.com</Text>
+              <Text style={styles.profileName}>{userInfo.name}</Text>
+              <Text style={styles.profileEmail}>{userInfo.email}</Text>
             </View>
+
 
             <View style={styles.menuItems}>
               {renderDrawerItem('Weather', 'cloud-outline', 'INDEX')}
