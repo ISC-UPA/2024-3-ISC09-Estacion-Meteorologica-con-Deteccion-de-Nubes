@@ -1,8 +1,23 @@
+import { GET_IA } from '@/api/queries/queryIA';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
 const CloudScreen = () => {
+  const [dataIA, setDataIA] = useState();
+  const { data: data_IA } = useQuery(GET_IA, {
+    variables: {},
+   });
+  
+  useEffect(()=>{
+    if (data_IA) {
+      console.log(data_IA);
+      console.log(data_IA.analysisPhotos);
+      setDataIA(data_IA.analysisPhotos);
+    }
+  }, [data_IA])
+
   const data = [
     {
       id: '1',
@@ -27,20 +42,20 @@ const CloudScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={dataIA}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.cardContainer}>
             <View style={styles.placeholder}>
               <Image
-                source={{ uri: item.imageUrl }}
+                source={{ uri: item.skyphoto_id.url_photo}}
                 style={styles.image}
               />
             </View>
             <View style={styles.card}>
               <View style={styles.row}>
-                <Text style={styles.cloudType}>{item.cloudType}</Text>
-                <Text style={styles.probability}>{item.probability}%</Text>
+                <Text style={styles.cloudType}>{item.sky_type}</Text>
+                <Text style={styles.probability}>{item.probability_rain}%</Text>
               </View>
             </View>
           </View>
