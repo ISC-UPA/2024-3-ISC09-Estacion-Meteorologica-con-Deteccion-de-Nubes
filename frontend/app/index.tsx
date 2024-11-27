@@ -21,7 +21,7 @@ export default function AzureSignIn(props: any) {
   const [userEmail, setUserEmail] = useState('');
   const navigation = useNavigation();
 
-  // Set options for the current screen
+  
   useLayoutEffect(() => {
     navigation.setOptions({
       title: '',
