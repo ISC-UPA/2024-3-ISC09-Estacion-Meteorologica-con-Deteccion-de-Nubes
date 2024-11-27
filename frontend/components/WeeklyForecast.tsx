@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface WeeklyForecastItem {
   day: string;
-  icon: string; 
+  icon: string;
   temperature: string | number;
 }
 
@@ -14,6 +14,7 @@ interface WeeklyForecastProps {
 }
 
 const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
+
   return (
     <Card style={styles.card}>
       <Text style={styles.title}>Weekly forecast</Text>
@@ -57,8 +58,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10, 
-    paddingHorizontal: 25, 
+    paddingVertical: 10,
+    paddingHorizontal: 25,
   },
   day: {
     fontSize: 16,

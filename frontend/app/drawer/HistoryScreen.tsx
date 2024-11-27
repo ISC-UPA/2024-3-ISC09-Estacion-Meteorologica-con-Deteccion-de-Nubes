@@ -36,7 +36,7 @@ const HistoryScreen = () => {
       <Stack.Screen options={{ title: '', headerShown: false }} />
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => router.push('/')}
+        onPress={() => router.push('/(tabs)/')}
       >
         <Ionicons name="arrow-back" size={24} color="#1464F6" />
       </TouchableOpacity>

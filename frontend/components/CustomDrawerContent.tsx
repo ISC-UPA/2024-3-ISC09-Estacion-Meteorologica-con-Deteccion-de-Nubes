@@ -95,7 +95,7 @@ export default function CustomDrawerContent(props: SideMenuProps) {
             <View style={{ flex: 1 }} />
             <View style={styles.bottomItems}>
               <View style={{ marginBottom: 60 }}>
-                {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremium')}
+                {renderDrawerItem('Go premium', 'diamond-outline', 'drawer/GoPremiumScreen')}
               </View>
 
               {/* Reemplazamos el renderDrawerItem por un ícono directo para Settings */}
