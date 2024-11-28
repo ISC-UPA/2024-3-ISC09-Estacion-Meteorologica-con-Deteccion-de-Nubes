@@ -73,8 +73,9 @@ const GoPremiumScreen = () => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-      <TouchableOpacity style={[styles.purchaseButton, { backgroundColor: isDarkMode ? '#1F7FFF' : '#3D8AF7' }]}>
+      <TouchableOpacity style={[styles.purchaseButton, { backgroundColor: isDarkMode ? '#1F7FFF' : '#3D8AF7' }]} onPress={() => router.push('/(tabs)/home')}>
         <Text style={styles.purchaseButtonText}>{t('purchase')}</Text>
+        
       </TouchableOpacity>
     </View>
   );

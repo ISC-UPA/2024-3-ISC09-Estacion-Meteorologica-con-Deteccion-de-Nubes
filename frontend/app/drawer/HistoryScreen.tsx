@@ -33,15 +33,16 @@ const HistoryScreen = () => {
     <View style={[styles.card, { backgroundColor: isDarkMode ? '#444' : '#FFFFFF' }]}>
       <Image source={{ uri: item.url_photo }} style={styles.image} />
       <View style={styles.info}>
-        <Text style={[styles.date, { color: isDarkMode ? '#ccc' : '#666' }]}>
+        <Text style={[styles.date, { color: isDarkMode ? '#ccc' : '#666', fontWeight: 'bold' }]}>
           {t('date')}: {new Date(item.date_photo).toLocaleString()}
         </Text>
-        <Text style={[styles.coordinates, { color: isDarkMode ? '#ccc' : '#666' }]}>
+        <Text style={[styles.coordinates, { color: isDarkMode ? '#ccc' : '#666', fontWeight: 'bold' }]}>
           {t('coordinates')}: {item.latitude}, {item.longitude}
         </Text>
       </View>
     </View>
   );
+  
 
   return (
     <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#f0f0f0' }]}>

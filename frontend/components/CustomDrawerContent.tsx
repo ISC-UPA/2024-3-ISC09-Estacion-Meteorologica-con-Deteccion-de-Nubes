@@ -119,13 +119,13 @@ export default function CustomDrawerContent(props: SideMenuProps) {
             </View>
 
             <View style={styles.menuItems}>
-              {renderDrawerItem('Weather', 'cloud-outline', 'INDEX')}
-              {renderDrawerItem('History', 'time-outline', 'drawer/HistoryScreen')}
+              {renderDrawerItem('weather', 'cloud-outline', 'home')}
+              {renderDrawerItem('historyTitle', 'time-outline', 'drawer/HistoryScreen')}
             </View>
             <View style={{ flex: 1 }} />
             <View style={styles.bottomItems}>
               <View style={{ marginBottom: 60 }}>
-                {renderDrawerItem('goPremium', 'diamond-outline', 'drawer/GoPremium')}
+                {renderDrawerItem('goPremium', 'diamond-outline', 'drawer/GoPremiumScreen')}
               </View>
 
               <TouchableOpacity
