@@ -61,19 +61,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand_600SemiBold ',
   },
   location: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'white',
     textAlign: 'left',
     fontFamily: 'Quicksand_700Bold',
     paddingHorizontal: 10,
-  },
-  region: {
-    fontSize: 16,
-    color: 'white',
-    textAlign: 'left',
-    fontFamily: 'Quicksand_700Bold',
-    paddingHorizontal: 10,
-    marginTop: 5, 
   },
 });
 
