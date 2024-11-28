@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 interface WeeklyForecastItem {
-  day: string;
+  day: string; // Ensure this matches keys like "monday", "tuesday", etc.
   icon: string;
   temperature: string | number;
 }
@@ -14,27 +15,26 @@ interface WeeklyForecastProps {
 }
 
 const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
+  const { t } = useTranslation();
 
   return (
     <Card style={styles.card}>
       <Text style={styles.title}>{t('weeklyForecast')}</Text>
       <View style={styles.divider} />
-      {
-         weeklyForecast && weeklyForecast.length > 0 ? (
-            weeklyForecast.map((item, index) => (
-              <View key={index}>
-                <View style={styles.row}>
-                  <Text style={styles.day}>{item.day}</Text>
-                  <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
-                  <Text style={styles.temperature}>{item.temperature}</Text>
-                </View>
-                {index < weeklyForecast.length - 1 && <View style={styles.secondDivider} />}
-              </View>
-            ))
-          ) : (
-            <Text>No weekly forecast data available</Text> // Aquí puedes mostrar un mensaje si no hay datos
-          )
-      }
+      {weeklyForecast && weeklyForecast.length > 0 ? (
+        weeklyForecast.map((item, index) => (
+          <View key={index}>
+            <View style={styles.row}>
+              <Text style={styles.day}>{t(`days.${item.day.toLowerCase()}`)}</Text>
+              <Ionicons name={item.icon} size={30} color="white" style={styles.icon} />
+              <Text style={styles.temperature}>{item.temperature}</Text>
+            </View>
+            {index < weeklyForecast.length - 1 && <View style={styles.secondDivider} />}
+          </View>
+        ))
+      ) : (
+        <Text>No weekly forecast data available</Text>
+      )}
     </Card>
   );
 };

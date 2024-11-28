@@ -45,6 +45,7 @@
     "historyTitle": "Historial",
     "historyItemName": "{{name}}",
     "date": "Fecha",
-  "coordinates": "Coordenadas"
+    "coordinates": "Coordenadas",
+    "cloudReading": "Lectura de Nubes"
   }
 }

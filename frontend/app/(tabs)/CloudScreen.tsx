@@ -1,50 +1,58 @@
-import { GET_IA } from '@/api/queries/queryIA';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext'; // Dark mode hook
+import { useTranslation } from 'react-i18next'; // Translation hook
+import { GET_IA } from '@/api/queries/queryIA';
+
+type AnalysisPhoto = {
+  id: string;
+  skyphoto_id: { url_photo: string };
+  sky_type: string;
+  probability_rain: number;
+};
 
 const CloudScreen = () => {
-  const [dataIA, setDataIA] = useState();
-  const { data: data_IA } = useQuery(GET_IA, {
-    variables: {},
-  });
+  const [dataIA, setDataIA] = useState<AnalysisPhoto[]>([]);
+  const { data } = useQuery(GET_IA, { variables: {} });
+  const { isDarkMode } = useTheme(); // Dark mode context
+  const { t } = useTranslation(); // Translation hook
 
   useEffect(() => {
-    if (data_IA) {
-      console.log(data_IA);
-      console.log(data_IA.analysisPhotos);
-      setDataIA(data_IA.analysisPhotos);
+    if (data) {
+      setDataIA(data.analysisPhotos);
     }
-  }, [data_IA]);
+  }, [data]);
+
+  const renderCloudItem = ({ item }: { item: AnalysisPhoto }) => (
+    <View style={[styles.card, { backgroundColor: isDarkMode ? '#444' : '#FFFFFF' }]}>
+      <Image source={{ uri: item.skyphoto_id.url_photo }} style={styles.image} />
+      <View style={[styles.info, { backgroundColor: isDarkMode ? '#333' : 'rgba(3, 48, 118, 0.5)' }]}>
+        <Text style={[styles.skyType, { color: isDarkMode ? '#ccc' : '#fff' }]}>{item.sky_type}</Text>
+        <Text style={[styles.probability, { color: isDarkMode ? '#ccc' : '#fff' }]}>{item.probability_rain}%</Text>
+      </View>
+    </View>
+  );
+  
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Ionicons name="cloudy" size={90} color="gray" />
-        <Text style={styles.headerTitle}>Cloud Reading</Text>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#f0f0f0' }]}>
+      <View style={styles.headerContainer}>
+        <View style={[styles.header, { borderBottomColor: isDarkMode ? '#444' : 'rgba(0, 0, 0, 0.2)' }]}>
+          <Ionicons name="cloudy" size={89} color={isDarkMode ? '#fff' : '#444'} />
+          <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#444' }]}>{t('cloudReading')}</Text>
+        </View>
       </View>
-
-      <FlatList
-        data={dataIA}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.cardContainer}>
-            <View style={styles.placeholder}>
-              <Image
-                source={{ uri: item.skyphoto_id.url_photo }}
-                style={styles.image}
-              />
-            </View>
-            <View style={styles.card}>
-              <View style={styles.row}>
-                <Text style={styles.cloudType}>{item.sky_type}</Text>
-                <Text style={styles.probability}>{item.probability_rain}%</Text>
-              </View>
-            </View>
-          </View>
-        )}
-      />
+      <View style={[styles.outerCard, { backgroundColor: isDarkMode ? '#555' : '#C0C0C0' }]}>
+        <FlatList
+          data={dataIA}
+          renderItem={renderCloudItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 };
@@ -52,60 +60,59 @@ const CloudScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
-    paddingVertical: 50,
+  },
+  headerContainer: {
+    paddingHorizontal: 10,
   },
   header: {
-    alignItems: 'center', 
-    marginBottom: 20,
+    alignItems: 'center',
+    marginVertical: 20,
+    borderBottomWidth: 2,
+    paddingBottom: 40,
+    marginTop: 80,
   },
-  headerTitle: {
-    fontSize: 18,
+  headerText: {
+    fontSize: 16,
     fontWeight: 'bold',
-    color: 'blak',
+    marginTop: 10,
   },
-  cardContainer: {
-    width: '100%',
-    marginBottom: 20,
+  list: {
+    paddingHorizontal: 10,
   },
-  placeholder: {
-    width: '100%',
-    height: 250,
-    backgroundColor: '#033076',
-    borderRadius: 20,
+  outerCard: {
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    marginVertical: 10,
+    height: 490,
     overflow: 'hidden',
+    backgroundColor: '#555', // Outer card color in dark mode
+  },
+  card: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginVertical: 5,
+    backgroundColor: '#444', // Card color
   },
   image: {
     width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    height: 120,
   },
-  card: {
-    width: '100%',
-    height: 60,
-    borderRadius: 20,
-    backgroundColor: 'rgba(3, 48, 118, 0.5)',
-    marginTop: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+  info: {
     padding: 10,
+    justifyContent: 'center',
+    backgroundColor: '#333', // Darker rectangle color in dark mode
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-  },
-  cloudType: {
+  skyType: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white',
   },
   probability: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white',
   },
 });
+
 
 export default CloudScreen;
