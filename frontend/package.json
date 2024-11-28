@@ -33,6 +33,8 @@
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
     "graphql": "^15.9.0",
+    "i18n-js": "^4.5.0",
+    "i18next": "^24.0.2",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^15.1.2",
