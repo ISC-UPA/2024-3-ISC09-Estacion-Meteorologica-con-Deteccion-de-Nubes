@@ -90,8 +90,8 @@ export default function WeatherScreen() {
   useEffect(() => {
     if (photoData && photoData.photoSkies) {
       const closestRecord = photoData.photoSkies.reduce((prev, curr) => {
-        const prevDiff = Math.abs(new Date(prev.reading_date).getTime() - new Date().getTime());
-        const currDiff = Math.abs(new Date(curr.reading_date).getTime() - new Date().getTime());
+        const prevDiff = Math.abs(new Date(prev.date_photo).getTime() - new Date().getTime());
+        const currDiff = Math.abs(new Date(curr.date_photo).getTime() - new Date().getTime());
         return currDiff < prevDiff ? curr : prev;
       });
 
