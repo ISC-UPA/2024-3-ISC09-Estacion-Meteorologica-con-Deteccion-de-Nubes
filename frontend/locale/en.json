@@ -41,6 +41,8 @@
       "hourlyForecast": "HOURLY FORECAST FOR THE NEXT FEW DAYS"
     },
     "historyTitle": "History",
-    "historyItemName": "{{name}}"
+    "historyItemName": "{{name}}",
+    "date": "Date",
+  "coordinates": "Coordinates"
   }
 }

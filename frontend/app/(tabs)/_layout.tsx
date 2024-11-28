@@ -29,7 +29,7 @@ import { TouchableOpacity } from 'react-native';
           }}
         >
           <Tabs.Screen
-            name="index"
+            name="home"
             options={{
               title: '',
               tabBarIcon: ({ color, focused }) => (

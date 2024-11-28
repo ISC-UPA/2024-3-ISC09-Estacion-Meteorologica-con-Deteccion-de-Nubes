@@ -39,7 +39,7 @@ const GoPremiumScreen = () => {
       <Stack.Screen options={{ title: '', headerShown: false }} />
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => router.push('/(tabs)/')}
+        onPress={() => router.push('/(tabs)/home')}
       >
         <Ionicons name="arrow-back" size={24} color={isDarkMode ? '#3D8AF7' : '#1464F6'} />
       </TouchableOpacity>

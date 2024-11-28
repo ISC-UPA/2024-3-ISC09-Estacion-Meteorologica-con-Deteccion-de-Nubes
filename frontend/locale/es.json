@@ -43,6 +43,8 @@
       "hourlyForecast": "PRONÓSTICO HORARIO PARA LOS PRÓXIMOS DÍAS"
     },
     "historyTitle": "Historial",
-    "historyItemName": "{{name}}"
+    "historyItemName": "{{name}}",
+    "date": "Fecha",
+  "coordinates": "Coordenadas"
   }
 }
