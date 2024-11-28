@@ -1,8 +1,8 @@
 FROM node:lts
 WORKDIR /app
 COPY package.json ./
-RUN npm install
+RUN yarn install
 COPY . .
 EXPOSE 8081
-RUN npm run build
-CMD ["npm", "run", "start"]
+RUN yarn run build
+CMD ["yarn", "run", "start"]
