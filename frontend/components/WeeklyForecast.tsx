@@ -17,7 +17,7 @@ const WeeklyForecast: React.FC<WeeklyForecastProps> = ({ weeklyForecast }) => {
 
   return (
     <Card style={styles.card}>
-      <Text style={styles.title}>Weekly forecast</Text>
+      <Text style={styles.title}>{t('weeklyForecast')}</Text>
       <View style={styles.divider} />
       {
          weeklyForecast && weeklyForecast.length > 0 ? (
