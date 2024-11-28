@@ -89,8 +89,6 @@ export default function CustomDrawerContent(props: SideMenuProps) {
             <View style={styles.menuItems}>
               {renderDrawerItem('Weather', 'cloud-outline', 'INDEX')}
               {renderDrawerItem('History', 'time-outline', 'drawer/HistoryScreen')}
-              {renderDrawerItem('My locations', 'location-outline', 'drawer/MyLocationsScreen')}
-              {renderDrawerItem('Favorites', 'heart-outline', 'drawer/FavoritesScreen')}
             </View>
             <View style={{ flex: 1 }} />
             <View style={styles.bottomItems}>
